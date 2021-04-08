@@ -23,7 +23,7 @@
 <br>
 <b>Technologies Incorporated:</b>
 <ul>
-  <li>Android</li>
-  <li>RoomDB</li>
-  <li>Retrofit</li>
+  <li><a href="https://developer.android.com/">Android</a></li>
+  <li><a href="https://developer.android.com/reference/android/arch/persistence/room/RoomDatabase">RoomDB</a></li>
+  <li><a href="https://square.github.io/retrofit/">Retrofit</a></li>
 </ul>
