@@ -16,6 +16,8 @@
 <ul>
   <li>Week 1: Refine project details, deliverables, write user stories, select technologies, etc.</li>
 </ul>
+<b>Main Project Idea:</b>
+  <li>Using API calls to a website (Flask?), we build a game (Android) that acts like a dungeon crawler whereas you explore a dungeon by fighting monsters in a wave battle style</li>
 <br>
 <b>Mockup:</b>
 <br>
