@@ -1,6 +1,10 @@
 language: android
 jdk: oraclejdk8
 
+before_script:
+    - mkdir -p "$ANDROID_HOME/licenses"
+    - cp ./google-licenses/* "$ANDROID_HOME/licenses/"
+
 env:
  global:
     - ANDROID_API_LEVEL=25
@@ -18,3 +22,7 @@ env:
 # if you need to run emulator(s) during your tests
     - sys-img-x86-android-26
     - sys-img-armeabi-v7a-android-17
+licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
