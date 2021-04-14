@@ -16,6 +16,7 @@ public class MyInstrumentedUnitTests {
 
     @Test
     public void intentFactoryCheck(){
+        
         boolean allIntentsPassing = true;
         // for each activity, grab an activity
         // if intent wasn't grabbed, allIntentPassing = false; break;
