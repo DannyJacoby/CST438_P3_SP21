@@ -21,3 +21,6 @@ licenses:
     - 'google-gdk-license-.+'
     - 'build-tools-license-.+'
 
+script:
+    - ./gradelw build check
+
