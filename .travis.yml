@@ -14,12 +14,8 @@ env:
 android:
  licenses:
     - 'android-sdk-preview-license-52d11cd2'
-    - 'android-sdk-license-31.0.1'
     - 'google-gdk-license-.+'
-    - 'build-tools-license-30.0.3'
     - 'build-tools-license-.+
-    - 'andorid-sdk-license-26.1.1'
-    - 'android-sdk-license-.+'
  components:
     - tools
     - platform-tools
