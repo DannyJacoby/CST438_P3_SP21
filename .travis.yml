@@ -1,5 +1,6 @@
 #Got a new script! Snagged this bad boy from
 #https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml
+#Added licenses since current issue is that there are "unaccepted licenses"
 language: android
 jdk: oraclejdk8
 sudo: false
