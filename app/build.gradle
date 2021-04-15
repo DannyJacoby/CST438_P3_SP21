@@ -32,6 +32,9 @@ dependencies {
 
     // testing dependencies
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
     androidTestImplementation ('com.android.support.test:runner:0.5'){
