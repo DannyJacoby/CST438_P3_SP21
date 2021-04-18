@@ -1,16 +1,20 @@
 package com.example.tatapi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
+import com.example.tatapi.db.AppDatabase;
+import com.example.tatapi.db.User;
+import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 public class LandingActivity extends AppCompatActivity {
     private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
@@ -22,12 +26,17 @@ public class LandingActivity extends AppCompatActivity {
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
 
+    private int mUserId = -1;
+
+    private UserDAO mUserDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_landing);
 
         wireUp();
+        getDatabase();
         checkForUser();
 
     }
@@ -58,6 +67,20 @@ public class LandingActivity extends AppCompatActivity {
             getPrefs();
         }
 
+        mUserId = mPrefs.getInt(USER_KEY, -1);
+        snackMaker("User is " + mUserId);
+        if(mUserId != -1){
+            Intent intent = HomeActivity.intent_factory(this);
+            startActivity(intent);
+            return;
+        }
+
+        List<User> users = mUserDAO.getAllUsers();
+        if(users.size() <= 0){
+            User defaultUser = new User("fake", "fake", 1);
+            User secondsUser = new User("fake2", "fake2", 1);
+            mUserDAO.insert(defaultUser, secondsUser);
+        }
 
     }
 
@@ -68,10 +91,11 @@ public class LandingActivity extends AppCompatActivity {
         snackBar.show();
     }
 
-    /**
-     * intent_factory
-     * @param context
-     */
+    private void getDatabase(){
+        mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
+
+    }
+
     public static Intent intent_factory(Context context){
         Intent intent = new Intent(context, LandingActivity.class);
         return intent;

@@ -16,4 +16,7 @@
     <string name="passwordString">Password</string>
     <string name="loginCreateString">Login or Create an Account</string>
     <string name="welcomeLoginString">Login</string>
+    <string name="welcomeHomeString">Welcome to TATAPI username</string>
+    <string name="playString">Play</string>
+    <string name="logoutString">Logout</string>
 </resources>
