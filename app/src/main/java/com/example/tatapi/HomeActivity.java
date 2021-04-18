@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
 
         startButton = findViewById(R.id.start_button);
         startButton.setOnClickListener(v -> {
-            Intent intent = GameActivity.intent_factory(getApplicationContext());
+            Intent intent = GameActivity.intent_factory(this);
             startActivity(intent);
             snackMaker("Starting game...");
         });

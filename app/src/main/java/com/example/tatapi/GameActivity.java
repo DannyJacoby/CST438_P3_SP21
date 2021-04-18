@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.example.tatapi.db.AppDatabase;
 import com.example.tatapi.db.User;
@@ -70,9 +71,9 @@ public class GameActivity extends AppCompatActivity {
         snackBar.show();
     }
 
-    public static Intent intent_factory(Context context, int userId){
+    public static Intent intent_factory(Context context){
         Intent intent = new Intent(context, HomeActivity.class);
-        intent.putExtra("userId", userId);
+
         return intent;
     }
 }
