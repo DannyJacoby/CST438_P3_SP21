@@ -16,6 +16,9 @@ import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
 
 public class HomeActivity extends AppCompatActivity {
+
+    public Button startButton;
+
     private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
     private static final String USER_KEY = "com.example.tatapi.USERS_KEY";
 
@@ -34,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        
         getDatabase();
         wireUp();
         login();
@@ -44,6 +47,13 @@ public class HomeActivity extends AppCompatActivity {
     private void wireUp(){
         playBtn = findViewById(R.id.playBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
+
+        startButton = findViewById(R.id.start_button);
+        startButton.setOnClickListener(v -> {
+            Intent intent = GameActivity.intent_factory(getApplicationContext());
+            startActivity(intent);
+            snackMaker("Starting game...");
+        });
 
         playBtn.setOnClickListener(v -> {
 
@@ -82,6 +92,7 @@ public class HomeActivity extends AppCompatActivity {
     private void getPrefs(){
         mPrefs = this.getSharedPreferences(PREF_KEY, 0);
         mEdit = mPrefs.edit();
+
     }
 
     private void snackMaker(String message){

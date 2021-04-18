@@ -17,6 +17,10 @@ public class GameActivity extends AppCompatActivity {
     private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
     private static final String USER_KEY = "com.example.tatapi.USERS_KEY";
 
+    public Button attackButton;
+    public Button defendButton;
+    public Button itemButton;
+
     private int mUserId = -1;
     private User mUser;
 
@@ -24,6 +28,7 @@ public class GameActivity extends AppCompatActivity {
 
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
