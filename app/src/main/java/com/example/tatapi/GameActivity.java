@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.tatapi.db.AppDatabase;
 import com.example.tatapi.db.User;
@@ -72,8 +73,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public static Intent intent_factory(Context context){
-        Intent intent = new Intent(context, HomeActivity.class);
-
+        Intent intent = new Intent(context, GameActivity.class);
         return intent;
     }
 }

@@ -17,8 +17,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class HomeActivity extends AppCompatActivity {
 
-    public Button startButton;
-
     private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
     private static final String USER_KEY = "com.example.tatapi.USERS_KEY";
 
@@ -48,15 +46,11 @@ public class HomeActivity extends AppCompatActivity {
         playBtn = findViewById(R.id.playBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
 
-        startButton = findViewById(R.id.start_button);
-        startButton.setOnClickListener(v -> {
+
+        playBtn.setOnClickListener(v -> {
             Intent intent = GameActivity.intent_factory(this);
             startActivity(intent);
             snackMaker("Starting game...");
-        });
-
-        playBtn.setOnClickListener(v -> {
-
         });
 
         logoutBtn.setOnClickListener(v ->{
