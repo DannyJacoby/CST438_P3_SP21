@@ -12,6 +12,8 @@ import android.widget.Button;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import com.parse.Parse;
+
 public class LandingActivity extends AppCompatActivity {
     private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
     private static final String USER_KEY = "com.example.tatapi.USERS_KEY";
@@ -26,6 +28,12 @@ public class LandingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Parse.initialize(new Parse.Configuration.Builder(this)
+            .applicationId(getString(R.string.back4app_app_id))
+            .clientKey(getString(R.string.back4app_client_key))
+            .server(getString(R.string.back4app_server_url))
+            .build());
 
         wireUp();
         checkForUser();

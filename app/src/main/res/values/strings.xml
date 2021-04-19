@@ -16,4 +16,8 @@
     <string name="passwordString">Password</string>
     <string name="loginCreateString">Login or Create an Account</string>
     <string name="welcomeLoginString">Login</string>
+    <!--  Back4app connection credentials  -->
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">pvk0ILQ0nY0kop4xpDJweRiKpDqT9vsNx2OTiUNz</string>
+    <string name="back4app_client_key">aHmAPDNNQqh08PYWuaD1vfsEwlDgMkJoVsYo6CXq</string>
 </resources>
