@@ -68,4 +68,11 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
+
+    // Parse SDK
+    implementation "com.github.parse-community.Parse-SDK-Android:parse:1.26.0"
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
 }
