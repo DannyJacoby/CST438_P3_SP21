@@ -14,6 +14,7 @@ import com.example.tatapi.db.User;
 import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
 
+import com.parse.Parse;
 import java.util.List;
 
 public class LandingActivity extends AppCompatActivity {
@@ -35,10 +36,19 @@ public class LandingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
+        initializeParse();
         wireUp();
         getDatabase();
         checkForUser();
 
+    }
+
+    private void initializeParse() {
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId(getString(R.string.back4app_app_id))
+                .clientKey(getString(R.string.back4app_client_key))
+                .server(getString(R.string.back4app_server_url))
+                .build());
     }
 
     private void wireUp(){

@@ -27,5 +27,8 @@
     <string name="welcomeHomeString">Welcome to TATAPI username</string>
     <string name="playString">Play</string>
     <string name="logoutString">Logout</string>
-
+    <!--  Back4app connection credentials  -->
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">pvk0ILQ0nY0kop4xpDJweRiKpDqT9vsNx2OTiUNz</string>
+    <string name="back4app_client_key">aHmAPDNNQqh08PYWuaD1vfsEwlDgMkJoVsYo6CXq</string>
 </resources>
