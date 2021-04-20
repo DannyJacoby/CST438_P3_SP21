@@ -29,15 +29,18 @@ public class LandingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Parse.initialize(new Parse.Configuration.Builder(this)
-            .applicationId(getString(R.string.back4app_app_id))
-            .clientKey(getString(R.string.back4app_client_key))
-            .server(getString(R.string.back4app_server_url))
-            .build());
-
+        initializeParse();
         wireUp();
         checkForUser();
 
+    }
+
+    private void initializeParse() {
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId(getString(R.string.back4app_app_id))
+                .clientKey(getString(R.string.back4app_client_key))
+                .server(getString(R.string.back4app_server_url))
+                .build());
     }
 
     private void wireUp(){
