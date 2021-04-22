@@ -94,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser(){
         if(validatePassword(m_Password)) {
 
+            // Replace me
             mUserId = mUserDAO.getUserByUsername(m_Username).getUserId();
 
             addUserToPrefs(mUserId);
@@ -105,14 +106,19 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validatePassword(String n_Password){
         if(m_amLogin){
+
+            // Replace me
             String password = mUserDAO.getUserByUsername(m_Username).getPassword();
             if(n_Password.equals(password)){
                 return true;
             }
             snackMaker("Bad Password");
         } else {
+            // Replace me
             if(!checkForUserInDB()){
+                // Replace me
                 User user = new User(m_Username, m_Password, 1, false);
+                // Replace me
                 mUserDAO.insert(user);
                 return true;
             }
