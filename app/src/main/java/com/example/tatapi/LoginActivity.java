@@ -3,6 +3,7 @@ package com.example.tatapi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,8 +20,8 @@ import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
-    private static final String USER_KEY = "com.example.tatapi.USERNAME_KEY";
+    protected static final String PREF_KEY = LandingActivity.PREF_KEY;
+    protected static final String USER_KEY = LandingActivity.USER_KEY;
 
     public boolean m_amLogin;
 
@@ -72,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getPrefs(){
-        mPrefs = this.getSharedPreferences(PREF_KEY, 0);
+        mPrefs = getSharedPreferences(PREF_KEY, 0);
         mEdit = mPrefs.edit();
     }
 
@@ -81,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
             getPrefs();
         }
         mEdit.putInt(USER_KEY, mUserId);
-        mEdit.apply();
         mEdit.commit();
+        mEdit.apply();
     }
 
     private boolean checkForUserInDB(){
@@ -111,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
             snackMaker("Bad Password");
         } else {
             if(!checkForUserInDB()){
-                User user = new User(m_Username, m_Password, 1);
+                User user = new User(m_Username, m_Password, 1, false);
                 mUserDAO.insert(user);
                 return true;
             }

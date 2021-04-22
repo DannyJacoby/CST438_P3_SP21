@@ -18,8 +18,8 @@ import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
 
 public class GameActivity extends AppCompatActivity {
-    private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
-    private static final String USER_KEY = "com.example.tatapi.USERS_KEY";
+    protected static final String PREF_KEY = LandingActivity.PREF_KEY;
+    protected static final String USER_KEY = LandingActivity.USER_KEY;
 
     public Button attackButton;
     public Button defendButton;
