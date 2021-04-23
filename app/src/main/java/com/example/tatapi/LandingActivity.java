@@ -35,20 +35,11 @@ public class LandingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
-
-        initializeParse();
+        
         wireUp();
         getDatabase();
         checkForUser();
 
-    }
-
-    private void initializeParse() {
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId(getString(R.string.back4app_app_id))
-                .clientKey(getString(R.string.back4app_client_key))
-                .server(getString(R.string.back4app_server_url))
-                .build());
     }
 
     private void wireUp(){
