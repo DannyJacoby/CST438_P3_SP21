@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         adminBtn = findViewById(R.id.adminBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
 
-         adminBtn.setVisibility( (currentUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
+        adminBtn.setVisibility( (currentUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
 
         playBtn.setOnClickListener(v -> {
             Intent intent = GameActivity.intent_factory(this);

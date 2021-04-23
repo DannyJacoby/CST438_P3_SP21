@@ -107,25 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // Replace
-            ArrayList<Object> existingusers = new ArrayList<>();
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            query.whereEqualTo("username", m_Username);
-            query.findInBackground(new FindCallback<ParseUser>() {
-                public void done(List<ParseUser> objects, ParseException e) {
-                    if (e == null) {
-                        for (int i = 0; i < objects.size(); i++) {
-                            existingusers.add(objects.get(i).getUsername());
-                        }
-                    } else {
-                        snackMaker(e.getMessage());
-                    }
-                }
-            });
-            if (existingusers.size() > 0) {
-                snackMaker("Username taken.");
-            }
-            else {
                 ParseUser user = new ParseUser();
                 user.setUsername(m_Username);
                 user.setPassword(m_Password);
@@ -140,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
-            }
         }
     }
 
