@@ -18,16 +18,21 @@ public class User {
     private String mUsername;
     private String mPassword;
 
+    private boolean isAdmin;
+
     private int mLevel;
     private float mHealth;
     private float mOverAllHealth;
     private float mMagic;
     private float mStrength;
 
-    public User(String mUsername, String mPassword, int mLevel){
+
+
+    public User(String mUsername, String mPassword, int mLevel, boolean isAdmin){
         this.mUsername = mUsername;
         this.mPassword = mPassword;
         this.mLevel = mLevel;
+        this.isAdmin = isAdmin;
         this.mHealth = 100;
         this.mOverAllHealth = getHealth();
         this.mMagic = 25;
@@ -60,6 +65,13 @@ public class User {
     }
     public void setLevel(int mLevel) {
         this.mLevel = mLevel;
+    }
+
+    public boolean getAdmin() {
+        return isAdmin;
+    }
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     public float getHealth() {

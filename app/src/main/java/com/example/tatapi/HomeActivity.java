@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,12 +17,15 @@ import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
 
 public class HomeActivity extends AppCompatActivity {
+    protected static final String PREF_KEY = LandingActivity.PREF_KEY;
+    protected static final String USER_KEY = LandingActivity.USER_KEY;
 
-    private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
-    private static final String USER_KEY = "com.example.tatapi.USERS_KEY";
 
     private Button playBtn;
+    private Button leaderboardBtn;
+    private Button adminBtn;
     private Button logoutBtn;
+
 
     private int mUserId = -1;
     private User mUser;
@@ -37,15 +41,19 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         
         getDatabase();
-        wireUp();
         login();
+        wireUp();
+
 
     }
 
     private void wireUp(){
         playBtn = findViewById(R.id.playBtn);
+        leaderboardBtn = findViewById(R.id.leaderboardBtn);
+        adminBtn = findViewById(R.id.adminBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
 
+         adminBtn.setVisibility( (mUser.getAdmin()) ? View.VISIBLE : View.INVISIBLE);
 
         playBtn.setOnClickListener(v -> {
             Intent intent = GameActivity.intent_factory(this);
@@ -53,12 +61,18 @@ public class HomeActivity extends AppCompatActivity {
             snackMaker("Starting game...");
         });
 
+        leaderboardBtn.setOnClickListener(v -> {
+            snackMaker("You clicked Leaderboard");
+        });
+
+        adminBtn.setOnClickListener(v -> {
+            snackMaker("You clicked admin congrats!");
+        });
+
         logoutBtn.setOnClickListener(v ->{
             logout();
         });
     }
-
-
 
     private void login(){
         if(mPrefs == null){
@@ -77,6 +91,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private void removeUserFromPrefs(){
         mEdit.remove(USER_KEY);
+        mEdit.commit();
+        mEdit.apply();
     }
 
     private void getDatabase(){
@@ -84,9 +100,8 @@ public class HomeActivity extends AppCompatActivity {
 
     }
     private void getPrefs(){
-        mPrefs = this.getSharedPreferences(PREF_KEY, 0);
+        mPrefs = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
         mEdit = mPrefs.edit();
-
     }
 
     private void snackMaker(String message){

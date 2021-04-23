@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import com.example.tatapi.db.AppDatabase;
@@ -18,8 +19,8 @@ import com.parse.Parse;
 import java.util.List;
 
 public class LandingActivity extends AppCompatActivity {
-    private static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
-    private static final String USER_KEY = "com.example.tatapi.USERS_KEY";
+    protected static final String PREF_KEY = "com.example.tatapi.PREFERENCES_KEY";
+    protected static final String USER_KEY = "com.example.tatapi.USERNAME_KEY";
 
     public Button mLoginBtn;
     public Button mCreateBtn;
@@ -59,7 +60,7 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void getPrefs(){
-        mPrefs = this.getSharedPreferences(PREF_KEY, 0);
+        mPrefs = getSharedPreferences(PREF_KEY, 0);
         mEdit = mPrefs.edit();
     }
 
@@ -69,7 +70,6 @@ public class LandingActivity extends AppCompatActivity {
         }
 
         mUserId = mPrefs.getInt(USER_KEY, -1);
-        snackMaker("User is " + mUserId);
         if(mUserId != -1){
             Intent intent = HomeActivity.intent_factory(this);
             startActivity(intent);
@@ -78,8 +78,8 @@ public class LandingActivity extends AppCompatActivity {
 
         List<User> users = mUserDAO.getAllUsers();
         if(users.size() <= 0){
-            User defaultUser = new User("fake", "fake", 1);
-            User secondsUser = new User("fake2", "fake2", 1);
+            User defaultUser = new User("fake", "fake", 1, true);
+            User secondsUser = new User("fake2", "fake2", 1, false);
             mUserDAO.insert(defaultUser, secondsUser);
         }
 
