@@ -15,6 +15,7 @@ import com.example.tatapi.db.AppDatabase;
 import com.example.tatapi.db.User;
 import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
     protected static final String PREF_KEY = LandingActivity.PREF_KEY;
@@ -29,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private int mUserId = -1;
     private User mUser;
-
+    ParseUser currentUser;
     private UserDAO mUserDAO;
 
     private SharedPreferences mPrefs = null;
@@ -39,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
+        currentUser = ParseUser.getCurrentUser();
         getDatabase();
         login();
         wireUp();
@@ -53,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         adminBtn = findViewById(R.id.adminBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
 
-         adminBtn.setVisibility( (mUser.getAdmin()) ? View.VISIBLE : View.INVISIBLE);
+         adminBtn.setVisibility( (currentUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
 
         playBtn.setOnClickListener(v -> {
             Intent intent = GameActivity.intent_factory(this);
@@ -84,6 +85,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void logout(){
         // Maybe add alert like "Do you really want to log out? Y/N"
+        ParseUser.logOut();
         removeUserFromPrefs();
         Intent intent = LandingActivity.intent_factory(this);
         startActivity(intent);

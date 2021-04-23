@@ -14,29 +14,12 @@ public class TATAPI extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Parse.enableLocalDatastore(this);
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(getString(R.string.back4app_app_id))
                 .clientKey(getString(R.string.back4app_client_key))
                 .server(getString(R.string.back4app_server_url))
                 .build());
-
-        //testing writes
-        User user = new User("testuser", "testpass", 1);
-        ParseObject newPlayer = new ParseObject("Player");
-        newPlayer.put("username", user.getUsername());
-        newPlayer.put("password", user.getPassword());
-        newPlayer.put("level", user.getLevel());
-        newPlayer.put("health", user.getHealth());
-        newPlayer.put("overallHealth", user.getOverAllHealth());
-        newPlayer.put("magic", user.getMagic());
-        newPlayer.put("strength", user.getStrength());
-        newPlayer.saveInBackground(e -> {
-            if (e != null){
-                Log.e("LoginActivity", e.getLocalizedMessage());
-            }else{
-                Log.d("LoginActivity","Object saved.");
-            }
-        });
     }
 
     @Override

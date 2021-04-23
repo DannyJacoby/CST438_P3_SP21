@@ -13,11 +13,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tatapi.db.AppDatabase;
 import com.example.tatapi.db.User;
 import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     protected static final String PREF_KEY = LandingActivity.PREF_KEY;
@@ -86,45 +95,53 @@ public class LoginActivity extends AppCompatActivity {
         mEdit.apply();
     }
 
-    private boolean checkForUserInDB(){
-        User user = mUserDAO.getUserByUsername(m_Username);
-        return user != null;
-    }
-
     private void loginUser(){
-        if(validatePassword(m_Password)) {
-
-            // Replace me
-            mUserId = mUserDAO.getUserByUsername(m_Username).getUserId();
-
-            addUserToPrefs(mUserId);
-
-            Intent intent = HomeActivity.intent_factory(this);
-            startActivity(intent);
-        }
-    }
-
-    private boolean validatePassword(String n_Password){
         if(m_amLogin){
-
-            // Replace me
-            String password = mUserDAO.getUserByUsername(m_Username).getPassword();
-            if(n_Password.equals(password)){
-                return true;
-            }
-            snackMaker("Bad Password");
+            ParseUser.logInInBackground(m_Username, m_Password, (parseUser, e) -> {
+                if (parseUser != null) {
+                    snackMaker("Successful Login");
+                    loginSuccess();
+                } else {
+                    ParseUser.logOut();
+                    snackMaker(e.getMessage());
+                }
+            });
         } else {
-            // Replace me
-            if(!checkForUserInDB()){
-                // Replace me
-                User user = new User(m_Username, m_Password, 1, false);
-                // Replace me
-                mUserDAO.insert(user);
-                return true;
+            // Replace
+            ArrayList<Object> existingusers = new ArrayList<>();
+            ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.whereEqualTo("username", m_Username);
+            query.findInBackground(new FindCallback<ParseUser>() {
+                public void done(List<ParseUser> objects, ParseException e) {
+                    if (e == null) {
+                        for (int i = 0; i < objects.size(); i++) {
+                            existingusers.add(objects.get(i).getUsername());
+                        }
+                    } else {
+                        snackMaker(e.getMessage());
+                    }
+                }
+            });
+            if (existingusers.size() > 0) {
+                snackMaker("Username taken.");
             }
-            snackMaker("Account Already Exists");
+            else {
+                ParseUser user = new ParseUser();
+                user.setUsername(m_Username);
+                user.setPassword(m_Password);
+                user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            snackMaker("Account Created.");
+                        } else {
+                            ParseUser.logOut();
+                            snackMaker(e.getMessage());
+                        }
+                    }
+                });
+            }
         }
-        return false;
     }
 
     private void refreshDisplay(){
@@ -150,4 +167,9 @@ public class LoginActivity extends AppCompatActivity {
         return intent;
     }
 
+    private void loginSuccess(){
+        addUserToPrefs(mUserId);
+        Intent intent = HomeActivity.intent_factory(this);
+        startActivity(intent);
+    }
 }
