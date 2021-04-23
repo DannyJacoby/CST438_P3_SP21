@@ -9,8 +9,6 @@ import com.parse.Parse;
 import com.parse.ParseObject;
 
 public class TATAPI extends Application {
-    // Called when the application is starting, before any other application objects have been created.
-    // Overriding this method is totally optional!
     @Override
     public void onCreate() {
         super.onCreate();

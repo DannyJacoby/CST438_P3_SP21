@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.tatapi.db.AppDatabase;
 import com.example.tatapi.db.User;
@@ -26,12 +27,11 @@ public class HomeActivity extends AppCompatActivity {
     private Button leaderboardBtn;
     private Button adminBtn;
     private Button logoutBtn;
+    private TextView welcomeMsg;
 
 
-    private int mUserId = -1;
-    private User mUser;
+    private String mUserId = "none";
     ParseUser currentUser;
-    private UserDAO mUserDAO;
 
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         getDatabase();
         login();
         wireUp();
+        welcomeMsg.setText("Welcome to TATAPI " + currentUser.getObjectId());
 
 
     }
@@ -53,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         leaderboardBtn = findViewById(R.id.leaderboardBtn);
         adminBtn = findViewById(R.id.adminBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
+        welcomeMsg = findViewById(R.id.welcomeHomeTextView);
 
         adminBtn.setVisibility( (currentUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
 
@@ -79,8 +81,7 @@ public class HomeActivity extends AppCompatActivity {
         if(mPrefs == null){
             getPrefs();
         }
-        mUserId = mPrefs.getInt(USER_KEY, -1);
-        mUser = mUserDAO.getUserByUserId(mUserId);
+        mUserId = mPrefs.getString(USER_KEY, "none");
     }
 
     private void logout(){
@@ -98,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void getDatabase(){
-        mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
+        //mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
 
     }
     private void getPrefs(){

@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
 
-    private int mUserId = -1;
+    private String mUserId = "none";
 
     private UserDAO mUserDAO;
 
@@ -86,11 +86,11 @@ public class LoginActivity extends AppCompatActivity {
         mEdit = mPrefs.edit();
     }
 
-    private void addUserToPrefs(int mUserId){
+    private void addUserToPrefs(String mUserId){
         if(mPrefs == null){
             getPrefs();
         }
-        mEdit.putInt(USER_KEY, mUserId);
+        mEdit.putString(USER_KEY, mUserId);
         mEdit.commit();
         mEdit.apply();
     }

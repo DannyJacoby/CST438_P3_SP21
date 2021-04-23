@@ -28,7 +28,7 @@ public class LandingActivity extends AppCompatActivity {
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
 
-    private int mUserId = -1;
+    private String mUserId = "none";
 
     private UserDAO mUserDAO;
 
@@ -69,8 +69,8 @@ public class LandingActivity extends AppCompatActivity {
             getPrefs();
         }
 
-        mUserId = mPrefs.getInt(USER_KEY, -1);
-        if(mUserId != -1){
+        mUserId = mPrefs.getString(USER_KEY, "none");
+        if(mUserId != "none"){
             Intent intent = HomeActivity.intent_factory(this);
             startActivity(intent);
             return;
