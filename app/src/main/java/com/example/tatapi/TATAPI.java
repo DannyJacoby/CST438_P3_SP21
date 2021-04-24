@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.res.Configuration;
 import android.util.Log;
 
-import com.example.tatapi.db.User;
+import com.example.tatapi.models.Enemy;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -13,6 +13,7 @@ public class TATAPI extends Application {
     public void onCreate() {
         super.onCreate();
         Parse.enableLocalDatastore(this);
+        ParseObject.registerSubclass(Enemy.class);
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(getString(R.string.back4app_app_id))
                 .clientKey(getString(R.string.back4app_client_key))

@@ -12,9 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.tatapi.db.AppDatabase;
-import com.example.tatapi.db.User;
-import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseUser;
 
@@ -31,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private String mUserId = "none";
-    ParseUser currentUser;
+    ParseUser mUser;
 
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
@@ -40,11 +37,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        currentUser = ParseUser.getCurrentUser();
+        mUser = ParseUser.getCurrentUser();
         getDatabase();
         login();
         wireUp();
-        welcomeMsg.setText("Welcome to TATAPI " + currentUser.getObjectId());
+        welcomeMsg.setText("Welcome to TATAPI " + mUser.getString("username"));
 
 
     }
@@ -56,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         logoutBtn = findViewById(R.id.logoutBtn);
         welcomeMsg = findViewById(R.id.welcomeHomeTextView);
 
-        adminBtn.setVisibility( (currentUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
+        adminBtn.setVisibility( (mUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
 
         playBtn.setOnClickListener(v -> {
             Intent intent = GameActivity.intent_factory(this);

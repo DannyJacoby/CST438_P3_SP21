@@ -9,13 +9,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.tatapi.db.AppDatabase;
-import com.example.tatapi.db.Enemy;
-import com.example.tatapi.db.EnemyDAO;
-import com.example.tatapi.db.User;
-import com.example.tatapi.db.UserDAO;
+import com.example.tatapi.models.Enemy;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
     protected static final String PREF_KEY = LandingActivity.PREF_KEY;
@@ -27,13 +32,10 @@ public class GameActivity extends AppCompatActivity {
     public TextView healthView;
     public TextView battleView;
 
-    private int mUserId = -1;
-    private User mUser;
-    private int dummyEnemyId = -1;
-    private Enemy dummyEnemy;
-
-    private UserDAO mUserDAO;
-    private EnemyDAO mEnemyDAO;
+    private String mUserId = "none";
+    private ParseUser mUser;
+    private String dummyEnemyId = "none";
+    private Enemy testEnemy;
 
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
@@ -44,7 +46,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        getDatabase();
+        getEnemy("yQLZKAoZ7Y");
         wireUp();
         login();
 
@@ -63,11 +65,15 @@ public class GameActivity extends AppCompatActivity {
         });
 
         defendButton.setOnClickListener(v -> {
-            snackMaker("Defending...");
+            //snackMaker("Defending...");
+
+            //Using this to test accessing enemy data (remove later)
+            snackMaker(testEnemy.getDescription());
         });
 
         itemButton.setOnClickListener(v -> {
             snackMaker("Using an item...");
+
         });
     }
 
@@ -75,14 +81,8 @@ public class GameActivity extends AppCompatActivity {
         if(mPrefs == null){
             getPrefs();
         }
-        mUserId = mPrefs.getInt(USER_KEY, -1);
-        mUser = mUserDAO.getUserByUserId(mUserId);
-    }
-
-    private void getDatabase(){
-        mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
-        // not sure if we need a local DB for enemies honestly but it's there if we need to use it
-        mEnemyDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getEnemyDAO();
+        mUserId = mPrefs.getString(USER_KEY, "none");
+        mUser = ParseUser.getCurrentUser();
     }
 
     private void getPrefs(){
@@ -108,5 +108,19 @@ public class GameActivity extends AppCompatActivity {
 
     private void updateBattleView(){
         battleView.setText("doing some sick attacks right now...");
+    }
+
+    private void getEnemy(String enemyId){
+        ParseQuery<Enemy> query = ParseQuery.getQuery("Enemy");
+        query.getInBackground(enemyId, new GetCallback<Enemy>() {
+            public void done(Enemy tempEnemy, ParseException e) {
+                if (e == null) {
+                    snackMaker("pulled " + tempEnemy.getName() + " from db");
+                    testEnemy = tempEnemy;
+                } else {
+                    snackMaker(e.getMessage());
+                }
+            }
+        });
     }
 }

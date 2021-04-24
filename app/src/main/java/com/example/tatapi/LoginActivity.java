@@ -15,9 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tatapi.db.AppDatabase;
-import com.example.tatapi.db.User;
-import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -47,14 +44,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private String mUserId = "none";
 
-    private UserDAO mUserDAO;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getDatabase();
         wireUp();
         refreshDisplay();
         getPrefs();
@@ -134,11 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                 message,
                 Snackbar.LENGTH_SHORT);
         snackBar.show();
-    }
-
-    private void getDatabase(){
-        mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
-
     }
 
     public static Intent intent_factory(Context context, boolean login){
