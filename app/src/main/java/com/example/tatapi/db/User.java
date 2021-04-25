@@ -25,6 +25,10 @@ public class User {
     private float mOverAllHealth;
     private float mMagic;
     private float mStrength;
+    private float mDefense;
+    private int mItemId;
+    //this name should change, apparently room doesn't like when you start names with "is" so I shortened it
+    private boolean mDead;
 
 
 
@@ -37,6 +41,9 @@ public class User {
         this.mOverAllHealth = getHealth();
         this.mMagic = 25;
         this.mStrength = 10;
+        this.mDefense = 8;
+        this.mItemId = -1;
+        this.mDead = false;
     }
 
     public int getUserId() {
@@ -95,6 +102,12 @@ public class User {
         this.mStrength = mStrength;
     }
 
+    public float getDefense(){ return mDefense; }
+    public void setDefense(float mDefense){ this.mDefense = mDefense; }
+
+    public int getItemId(){ return mItemId; }
+    public void setItemId(int mItemId){ this.mItemId = mItemId; }
+
     public float getOverAllHealth() {
         return mOverAllHealth;
     }
@@ -102,10 +115,15 @@ public class User {
         this.mOverAllHealth = mOverAllHealth;
     }
 
+    public boolean getDead(){ return mDead; }
+    public void setDead(boolean mDead){ this.mDead = mDead; }
+
     public void calculateStats(){
+        //stat calculation formula here
         this.mHealth += getLevel() * 10;
         this.mMagic += getLevel() * 5;
         this.mStrength += getLevel() * 2;
+        this.mDefense += getLevel() * 2;
     }
 
     public void takeDamage(float damage){
@@ -116,11 +134,13 @@ public class User {
     }
 
     public float dealDamage(){
+        //damage calculation formula here
         return 0.1f;
     }
 
     public void die(){
         Log.d("EVENT", "YOU DIED");
+        this.mDead = true;
     }
 
     @Override
@@ -140,6 +160,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mUserId, mUsername, mPassword, mLevel, mHealth, mOverAllHealth, mMagic, mStrength);
+        return Objects.hash(mUserId, mUsername, mPassword, mLevel, mHealth, mOverAllHealth, mMagic, mStrength, mDefense);
     }
 }

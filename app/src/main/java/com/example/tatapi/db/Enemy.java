@@ -24,7 +24,9 @@ public class Enemy {
     // might be nice to have a description for enemies
     private String mDescription;
     // if we implement items
-    //private int mItemId;
+    private int mItemId;
+    //this name should change, apparently room doesn't like when you start names with "is" so I shortened it
+    private boolean mDead;
 
     // these are all base things that should be brought down from the DB
     public Enemy(String mName, float mHealth, float mStrength, float mDefense){
@@ -33,6 +35,7 @@ public class Enemy {
         this.mOverAllHealth = getHealth();
         this.mStrength = mStrength;
         this.mDefense = mDefense;
+        this.mDead = false;
     }
 
     public String getName() {return mName; }
@@ -66,6 +69,9 @@ public class Enemy {
         this.mDefense = mDefense;
     }
 
+    public int getItemId(){ return mItemId; }
+    public void setItemId(int mItemId){ this.mItemId = mItemId; }
+
     public float getOverAllHealth() {
         return mOverAllHealth;
     }
@@ -75,6 +81,9 @@ public class Enemy {
 
     public String getDescription(){ return mDescription; }
     public void setDescription(String mDescription){ this.mDescription = mDescription; }
+
+    public boolean getDead(){ return mDead; }
+    public void setDead(boolean mDead){ this.mDead = mDead; }
 
     public void calculateStats(){
         // never done random generation with this before, hope I set it up right
@@ -104,5 +113,6 @@ public class Enemy {
 
     public void die(){
         Log.d("EVENT", mName + " DIED");
+        this.mDead = true;
     }
 }
