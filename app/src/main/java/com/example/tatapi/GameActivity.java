@@ -62,13 +62,18 @@ public class GameActivity extends AppCompatActivity {
         attackButton.setOnClickListener(v -> {
             updateHealthView();
             updateBattleView();
+
+            //using for test purposes (remove later)
+            testFunctionToChangeEnemyData(testEnemy);
+            updateEnemy(testEnemy);
         });
 
         defendButton.setOnClickListener(v -> {
             //snackMaker("Defending...");
 
             //Using this to test accessing enemy data (remove later)
-            snackMaker(testEnemy.getDescription());
+            //snackMaker(testEnemy.getDescription());
+            snackMaker(Integer.toString(testEnemy.getHealth()));
         });
 
         itemButton.setOnClickListener(v -> {
@@ -111,6 +116,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void getEnemy(String enemyId){
+        //subject to change depending on game play implementation
         ParseQuery<Enemy> query = ParseQuery.getQuery("Enemy");
         query.getInBackground(enemyId, new GetCallback<Enemy>() {
             public void done(Enemy tempEnemy, ParseException e) {
@@ -122,5 +128,17 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void updateEnemy (Enemy enemy){
+        //subject to change or removal depending on game play implementation
+        enemy.saveInBackground();
+    }
+
+    private void testFunctionToChangeEnemyData(Enemy enemy){
+        //remove later
+        enemy.setHealth(enemy.getHealth() + 25);
+        enemy.setStrength(enemy.getStrength() + 5);
+        enemy.setDefense(enemy.getDefense() + 5);
     }
 }
