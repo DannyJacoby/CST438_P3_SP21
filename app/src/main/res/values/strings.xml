@@ -21,8 +21,8 @@
     <string name="defend_button_label">Defend</string>
     <string name="item_button_label">Item</string>
     <string name="magic_button_label">Magic</string>
-    <string name="sample_health_text">Player HP: 100|100 \nEnemy HP: 54|100</string>
-    <string name="sample_battle_text">Enemy took 5 damage.\nPlayer took 0 damage.</string>
+    <string name="sample_health_text"></string>
+    <string name="sample_battle_text"></string>
     <string name="sample_enemy_name">Test Enemy</string>
     <string name="welcomeHomeString">Welcome to TATAPI username</string>
     <string name="playString">Play</string>
