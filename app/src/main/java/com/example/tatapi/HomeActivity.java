@@ -10,11 +10,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.example.tatapi.db.AppDatabase;
-import com.example.tatapi.db.User;
-import com.example.tatapi.db.UserDAO;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
     protected static final String PREF_KEY = LandingActivity.PREF_KEY;
@@ -25,12 +24,11 @@ public class HomeActivity extends AppCompatActivity {
     private Button leaderboardBtn;
     private Button adminBtn;
     private Button logoutBtn;
+    private TextView welcomeMsg;
 
 
-    private int mUserId = -1;
-    private User mUser;
-
-    private UserDAO mUserDAO;
+    private String mUserId = "none";
+    ParseUser mUser;
 
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
@@ -39,10 +37,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
+        mUser = ParseUser.getCurrentUser();
         getDatabase();
         login();
         wireUp();
+        welcomeMsg.setText("Welcome to TATAPI " + mUser.getString("username"));
 
 
     }
@@ -52,8 +51,9 @@ public class HomeActivity extends AppCompatActivity {
         leaderboardBtn = findViewById(R.id.leaderboardBtn);
         adminBtn = findViewById(R.id.adminBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
+        welcomeMsg = findViewById(R.id.welcomeHomeTextView);
 
-         adminBtn.setVisibility( (mUser.getAdmin()) ? View.VISIBLE : View.INVISIBLE);
+        adminBtn.setVisibility( (mUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
 
         playBtn.setOnClickListener(v -> {
             Intent intent = GameActivity.intent_factory(this);
@@ -78,12 +78,12 @@ public class HomeActivity extends AppCompatActivity {
         if(mPrefs == null){
             getPrefs();
         }
-        mUserId = mPrefs.getInt(USER_KEY, -1);
-        mUser = mUserDAO.getUserByUserId(mUserId);
+        mUserId = mPrefs.getString(USER_KEY, "none");
     }
 
     private void logout(){
         // Maybe add alert like "Do you really want to log out? Y/N"
+        ParseUser.logOut();
         removeUserFromPrefs();
         Intent intent = LandingActivity.intent_factory(this);
         startActivity(intent);
@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void getDatabase(){
-        mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
+        //mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
 
     }
     private void getPrefs(){
