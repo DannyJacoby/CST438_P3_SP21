@@ -1,0 +1,1 @@
+Added a GameState class to the Back4app database, subject to change.
