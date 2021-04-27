@@ -28,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private String mUserId = "none";
-    ParseUser mUser;
+    private ParseUser mUser;
 
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
@@ -37,12 +37,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mUser = ParseUser.getCurrentUser();
-        getDatabase();
+
         login();
         wireUp();
-        welcomeMsg.setText("Welcome to TATAPI " + mUser.getString("username"));
-
 
     }
 
@@ -79,6 +76,10 @@ public class HomeActivity extends AppCompatActivity {
             getPrefs();
         }
         mUserId = mPrefs.getString(USER_KEY, "none");
+        mUser = ParseUser.getCurrentUser();
+
+        String wMsg = "Welcome to TATAPI " + mUser.getString("username");
+        welcomeMsg.setText(wMsg);
     }
 
     private void logout(){
@@ -99,6 +100,7 @@ public class HomeActivity extends AppCompatActivity {
         //mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
 
     }
+
     private void getPrefs(){
         mPrefs = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
         mEdit = mPrefs.edit();

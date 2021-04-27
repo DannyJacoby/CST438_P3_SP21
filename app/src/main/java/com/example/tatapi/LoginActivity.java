@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         continueBtn.setOnClickListener(v -> {
             grabStringsFromDisplay();
             loginUser();
-
         });
 
         m_UsernameField = findViewById(R.id.editTextNameField);
@@ -109,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void done(ParseException e) {
                         if (e == null) {
                             snackMaker("Account Created.");
+
                         } else {
                             ParseUser.logOut();
                             snackMaker(e.getMessage());
@@ -116,6 +116,12 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
         }
+    }
+
+    private void loginSuccess(){
+        addUserToPrefs(mUserId);
+        Intent intent = HomeActivity.intent_factory(this);
+        startActivity(intent);
     }
 
     private void refreshDisplay(){
@@ -134,11 +140,5 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra("amILogin", login);
         return intent;
-    }
-
-    private void loginSuccess(){
-        addUserToPrefs(mUserId);
-        Intent intent = HomeActivity.intent_factory(this);
-        startActivity(intent);
     }
 }

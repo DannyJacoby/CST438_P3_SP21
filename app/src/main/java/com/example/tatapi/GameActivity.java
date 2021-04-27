@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tatapi.db.User;
 import com.example.tatapi.models.Enemy;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
@@ -36,6 +37,8 @@ public class GameActivity extends AppCompatActivity {
 
     private String mUserId = "none";
     private ParseUser mUser;
+
+//    private User mUser;
     private String dummyEnemyId = "none";
     private Enemy testEnemy;
 
@@ -54,9 +57,12 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        // this will be called each time an enemy dies?
         getEnemy("yQLZKAoZ7Y");
+
         wireUp();
         login();
+
         healthView.setText(currentHealthDisplay());
         lineCount = 0;
         turnCount = 0;
@@ -162,31 +168,6 @@ public class GameActivity extends AppCompatActivity {
         return (currentHealth);
     }
 
-    private void login(){
-        if(mPrefs == null){
-            getPrefs();
-        }
-        mUserId = mPrefs.getString(USER_KEY, "none");
-        mUser = ParseUser.getCurrentUser();
-    }
-
-    private void getPrefs(){
-        mPrefs = this.getSharedPreferences(PREF_KEY, 0);
-        mEdit = mPrefs.edit();
-    }
-
-    private void snackMaker(String message){
-        Snackbar snackBar = Snackbar.make(findViewById(R.id.GameLayout),
-                message,
-                Snackbar.LENGTH_SHORT);
-        snackBar.show();
-    }
-
-    public static Intent intent_factory(Context context){
-        Intent intent = new Intent(context, GameActivity.class);
-        return intent;
-    }
-
     private void executeTurn(int type){
         //type 0 will be attack
         if(lineCount + 1 > 8){
@@ -267,5 +248,30 @@ public class GameActivity extends AppCompatActivity {
         enemy.setHealth(enemy.getHealth() + 25);
         enemy.setStrength(enemy.getStrength() + 5);
         enemy.setDefense(enemy.getDefense() + 5);
+    }
+
+    private void login(){
+        if(mPrefs == null){
+            getPrefs();
+        }
+        mUserId = mPrefs.getString(USER_KEY, "none");
+        mUser = ParseUser.getCurrentUser();
+    }
+
+    private void getPrefs(){
+        mPrefs = this.getSharedPreferences(PREF_KEY, 0);
+        mEdit = mPrefs.edit();
+    }
+
+    private void snackMaker(String message){
+        Snackbar snackBar = Snackbar.make(findViewById(R.id.GameLayout),
+                message,
+                Snackbar.LENGTH_SHORT);
+        snackBar.show();
+    }
+
+    public static Intent intent_factory(Context context){
+        Intent intent = new Intent(context, GameActivity.class);
+        return intent;
     }
 }
