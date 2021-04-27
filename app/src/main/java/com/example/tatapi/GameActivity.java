@@ -79,20 +79,20 @@ public class GameActivity extends AppCompatActivity {
             //using for test purposes (remove later)
             testFunctionToChangeEnemyData(testEnemy);
             updateEnemy(testEnemy);
-            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
-                executeTurn(0);
-                turnCount++;
-            }
-            else if(mUser.getDead() == true){
-                healthView.setText(currentHealthDisplay());
-                snackMaker("can't do anything, you're dead!");
-                Log.d("EVENT", "Survived " + turnCount + " turns.");
-            }
-            else{
-                snackMaker("Enemy is dead, level up and grab a new monster");
-                //level up here
-                enemiesDefeated++;
-            }
+//            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
+//                executeTurn(0);
+//                turnCount++;
+//            }
+//            else if(mUser.getDead() == true){
+//                healthView.setText(currentHealthDisplay());
+//                snackMaker("can't do anything, you're dead!");
+//                Log.d("EVENT", "Survived " + turnCount + " turns.");
+//            }
+//            else{
+//                snackMaker("Enemy is dead, level up and grab a new monster");
+//                //level up here
+//                enemiesDefeated++;
+//            }
         });
 
         defendButton.setOnClickListener(v -> {
@@ -101,37 +101,37 @@ public class GameActivity extends AppCompatActivity {
             //Using this to test accessing enemy data (remove later)
             //snackMaker(testEnemy.getDescription());
             snackMaker(Integer.toString(testEnemy.getHealth()));
-            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
-                executeTurn(1);
-                turnCount++;
-            }
-            else if(mUser.getDead() == true){
-                snackMaker("can't do anything, you're dead!");
-                Log.d("EVENT", "Survived " + turnCount + " turns.");
-            }
-            else{
-                snackMaker("Enemy is dead, level up and grab a new monster");
-                //level up here
-                enemiesDefeated++;
-            }
+//            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
+//                executeTurn(1);
+//                turnCount++;
+//            }
+//            else if(mUser.getDead() == true){
+//                snackMaker("can't do anything, you're dead!");
+//                Log.d("EVENT", "Survived " + turnCount + " turns.");
+//            }
+//            else{
+//                snackMaker("Enemy is dead, level up and grab a new monster");
+//                //level up here
+//                enemiesDefeated++;
+//            }
         });
 
         itemButton.setOnClickListener(v -> {
             snackMaker("Using an item...");
 
-            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
-                snackMaker("Using an item...");
-                turnCount++;
-            }
-            else if(mUser.getDead() == true){
-                snackMaker("can't do anything, you're dead!");
-                Log.d("EVENT", "Survived " + turnCount + " turns.");
-            }
-            else{
-                snackMaker("Enemy is dead, level up and grab a new monster");
-                //level up here
-                enemiesDefeated++;
-            }
+//            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
+//                snackMaker("Using an item...");
+//                turnCount++;
+//            }
+//            else if(mUser.getDead() == true){
+//                snackMaker("can't do anything, you're dead!");
+//                Log.d("EVENT", "Survived " + turnCount + " turns.");
+//            }
+//            else{
+//                snackMaker("Enemy is dead, level up and grab a new monster");
+//                //level up here
+//                enemiesDefeated++;
+//            }
         });
     }
 
@@ -140,24 +140,24 @@ public class GameActivity extends AppCompatActivity {
 
         //player's hp
         //if below 0, just display 0
-        if(mUser.getHealth() <= 0){
-            currentHealth += "0.0/";
-        }
-        else{
-            currentHealth += mUser.getHealth() + "/";
-        }
-        currentHealth += mUser.getOverAllHealth() + "\n";
-
-        currentHealth += dummyEnemy.getName() + " HP: ";
-
-        //enemy's hp
-        //if below 0, just display 0
-        if(dummyEnemy.getHealth() <= 0){
-            currentHealth += "0.0/";
-        }else{
-            currentHealth += dummyEnemy.getHealth() + "/";
-        }
-        currentHealth += dummyEnemy.getOverAllHealth();
+//        if(mUser.getHealth() <= 0){
+//            currentHealth += "0.0/";
+//        }
+//        else{
+//            currentHealth += mUser.getHealth() + "/";
+//        }
+//        currentHealth += mUser.getOverAllHealth() + "\n";
+//
+//        currentHealth += dummyEnemy.getName() + " HP: ";
+//
+//        //enemy's hp
+//        //if below 0, just display 0
+//        if(dummyEnemy.getHealth() <= 0){
+//            currentHealth += "0.0/";
+//        }else{
+//            currentHealth += dummyEnemy.getHealth() + "/";
+//        }
+//        currentHealth += dummyEnemy.getOverAllHealth();
 
         return (currentHealth);
     }
@@ -195,9 +195,9 @@ public class GameActivity extends AppCompatActivity {
         }
         if(type == 0){
             //replace with damage calulation
-            dummyEnemy.takeDamage(50.0f);
+//            dummyEnemy.takeDamage(50.0f);
             healthView.setText(currentHealthDisplay());
-            battleView.append(dummyEnemy.getName() + " took " + 50.0f + " damage.\n");
+//            battleView.append(dummyEnemy.getName() + " took " + 50.0f + " damage.\n");
             lineCount++;
             //using a handler + runnable to delay an action so an enemy's attack is not instant
             //supposedly each view has its own handler, not sure what it actually is though
@@ -208,7 +208,7 @@ public class GameActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     //replace with damage calculation
-                    mUser.takeDamage(25.0f);
+//                    mUser.takeDamage(25.0f);
                     healthView.setText(currentHealthDisplay());
                     battleView.append("Player took " + 25.0f + " damage.\n");
                     lineCount++;
@@ -224,7 +224,7 @@ public class GameActivity extends AppCompatActivity {
                 public void run() {
                     //replace with defense calculation
                     float damage = 25.0f/2.0f;
-                    mUser.takeDamage(damage);
+//                    mUser.takeDamage(damage);
                     healthView.setText(currentHealthDisplay());
                     battleView.append("Player took " + damage + " damage.\n");
                     lineCount++;

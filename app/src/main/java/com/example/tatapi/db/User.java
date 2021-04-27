@@ -8,11 +8,8 @@ import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
-@Entity(tableName = AppDatabase.USER_TABLE)
 public class User {
 
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
     private int mUserId;
 
     private String mUsername;
@@ -29,8 +26,6 @@ public class User {
     private int mItemId;
     //this name should change, apparently room doesn't like when you start names with "is" so I shortened it
     private boolean mDead;
-
-
 
     public User(String mUsername, String mPassword, int mLevel, boolean isAdmin){
         this.mUsername = mUsername;

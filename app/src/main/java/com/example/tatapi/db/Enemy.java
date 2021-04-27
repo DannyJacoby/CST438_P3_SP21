@@ -7,10 +7,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.util.Random;
 
-@Entity(tableName = AppDatabase.ENEMY_TABLE)
 public class Enemy {
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
+
     private int mEnemyId;
     // Stats
     private String mName;
