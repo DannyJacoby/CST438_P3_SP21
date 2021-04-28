@@ -50,6 +50,9 @@ public class HomeActivity extends AppCompatActivity {
         logoutBtn = findViewById(R.id.logoutBtn);
         welcomeMsg = findViewById(R.id.welcomeHomeTextView);
 
+        String wMsg = "Welcome to TATAPI " + mUser.getString("username");
+        welcomeMsg.setText(wMsg);
+
         adminBtn.setVisibility( (mUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
 
         playBtn.setOnClickListener(v -> {
@@ -59,6 +62,8 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         leaderboardBtn.setOnClickListener(v -> {
+            Intent intent = LeaderboardActivity.intent_factory(this);
+            startActivity(intent);
             snackMaker("You clicked Leaderboard");
         });
 
@@ -77,9 +82,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         mUserId = mPrefs.getString(USER_KEY, "none");
         mUser = ParseUser.getCurrentUser();
-
-        String wMsg = "Welcome to TATAPI " + mUser.getString("username");
-        welcomeMsg.setText(wMsg);
     }
 
     private void logout(){
