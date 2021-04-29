@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tatapi.db.User;
+import com.example.tatapi.models.User;
 import com.example.tatapi.models.Enemy;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
@@ -37,6 +37,8 @@ public class GameActivity extends AppCompatActivity {
 
     private String mUserId = "none";
     private ParseUser mUser;
+    private User player;
+
 
 //    private User mUser;
     private String dummyEnemyId = "none";
@@ -62,8 +64,6 @@ public class GameActivity extends AppCompatActivity {
 
         wireUp();
         login();
-
-        healthView.setText(currentHealthDisplay());
         lineCount = 0;
         turnCount = 0;
         enemiesDefeated = 0;
@@ -142,28 +142,26 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private String currentHealthDisplay() {
-        String currentHealth = "Player HP: ";
+        String currentHealth = player.getUsername();
+        currentHealth += "'s HP: ";
 
         //player's hp
         //if below 0, just display 0
-//        if(mUser.getHealth() <= 0){
-//            currentHealth += "0.0/";
-//        }
-//        else{
-//            currentHealth += mUser.getHealth() + "/";
-//        }
-//        currentHealth += mUser.getOverAllHealth() + "\n";
-//
-//        currentHealth += dummyEnemy.getName() + " HP: ";
-//
-//        //enemy's hp
-//        //if below 0, just display 0
-//        if(dummyEnemy.getHealth() <= 0){
-//            currentHealth += "0.0/";
-//        }else{
-//            currentHealth += dummyEnemy.getHealth() + "/";
-//        }
-//        currentHealth += dummyEnemy.getOverAllHealth();
+        if (player.getHealth() <= 0) {
+            currentHealth += "0.0/";
+        } else {
+            currentHealth += player.getHealth() + "/";
+        }
+        currentHealth += player.getOverAllHealth() + "\n";
+        currentHealth += testEnemy.getName() + " HP: ";
+        //enemy's hp
+        //if below 0, just display 0
+        if (testEnemy.getHealth() <= 0) {
+            currentHealth += "0/";
+        } else {
+            currentHealth += testEnemy.getOverallHealth() + "/";
+        }
+        currentHealth += testEnemy.getHealth();
 
         return (currentHealth);
     }
@@ -231,11 +229,22 @@ public class GameActivity extends AppCompatActivity {
                 if (e == null) {
                     snackMaker("pulled " + tempEnemy.getName() + " from db");
                     testEnemy = tempEnemy;
+                    healthView.setText(currentHealthDisplay());
                 } else {
                     snackMaker(e.getMessage());
                 }
             }
         });
+    }
+
+    private User setPlayerInfo(ParseUser currentUser){
+        User player = new User();
+        player.setUsername(currentUser.get("username").toString());
+        player.setHealth(currentUser.getInt("health"));
+        player.setOverAllHealth(currentUser.getInt("overallHealth"));
+        player.setStrength(currentUser.getInt("strength"));
+        player.setDefense(currentUser.getInt("defense"));
+        return player;
     }
 
     private void updateEnemy (Enemy enemy){
@@ -256,6 +265,7 @@ public class GameActivity extends AppCompatActivity {
         }
         mUserId = mPrefs.getString(USER_KEY, "none");
         mUser = ParseUser.getCurrentUser();
+        player = setPlayerInfo(mUser);
     }
 
     private void getPrefs(){
