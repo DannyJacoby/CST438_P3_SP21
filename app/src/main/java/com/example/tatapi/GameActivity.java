@@ -40,8 +40,7 @@ public class GameActivity extends AppCompatActivity {
     private User player;
 
 
-//    private User mUser;
-    private String dummyEnemyId = "none";
+
     private Enemy testEnemy;
 
     private SharedPreferences mPrefs = null;
@@ -52,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
     //these should be exported or maybe just added onto the user object
     private int turnCount;
     private int enemiesDefeated;
+    private int currentLevel;
 
 
     @Override
@@ -83,7 +83,7 @@ public class GameActivity extends AppCompatActivity {
             updateBattleView();
 
             //using for test purposes (remove later)
-            testFunctionToChangeEnemyData(testEnemy);
+            //testFunctionToChangeEnemyData(testEnemy);
             updateEnemy(testEnemy);
 //            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
 //                executeTurn(0);
@@ -159,9 +159,9 @@ public class GameActivity extends AppCompatActivity {
         if (testEnemy.getHealth() <= 0) {
             currentHealth += "0/";
         } else {
-            currentHealth += testEnemy.getOverallHealth() + "/";
+            currentHealth += testEnemy.getHealth() + "/";
         }
-        currentHealth += testEnemy.getHealth();
+        currentHealth += testEnemy.getOverallHealth();
 
         return (currentHealth);
     }
@@ -227,8 +227,24 @@ public class GameActivity extends AppCompatActivity {
         query.getInBackground(enemyId, new GetCallback<Enemy>() {
             public void done(Enemy tempEnemy, ParseException e) {
                 if (e == null) {
-                    snackMaker("pulled " + tempEnemy.getName() + " from db");
+                    //snackMaker("pulled " + tempEnemy.getName() + " from db");
                     testEnemy = tempEnemy;
+                    // Quick dump of info if needed for testing...
+                    /*
+                    Log.d("DEBUG", "Start Enemy OverallHealth: " + Integer.toString(testEnemy.getOverallHealth()));
+                    Log.d("DEBUG", "Start Enemy Health: " + Integer.toString(testEnemy.getHealth()));
+                    Log.d("DEBUG", "Start Enemy Strength: " + Integer.toString(testEnemy.getStrength()));
+                    Log.d("DEBUG", "Start Enemy Defense: " + Integer.toString(testEnemy.getDefense()));
+                     */
+                    //NOTE: ONLY call calcStats upon level up, do not call it upon restoring state
+                    //it will overwrite stats
+                    tempEnemy.calcStats(currentLevel);
+                    /*
+                    Log.d("DEBUG", "New Enemy OverallHealth: " + Integer.toString(testEnemy.getOverallHealth()));
+                    Log.d("DEBUG", "New Enemy Health: " + Integer.toString(testEnemy.getHealth()));
+                    Log.d("DEBUG", "New Enemy Strength: " + Integer.toString(testEnemy.getStrength()));
+                    Log.d("DEBUG", "New Enemy Defense: " + Integer.toString(testEnemy.getDefense()));
+                     */
                     healthView.setText(currentHealthDisplay());
                 } else {
                     snackMaker(e.getMessage());
@@ -244,19 +260,13 @@ public class GameActivity extends AppCompatActivity {
         player.setOverAllHealth(currentUser.getInt("overallHealth"));
         player.setStrength(currentUser.getInt("strength"));
         player.setDefense(currentUser.getInt("defense"));
+        player.setLevel(currentUser.getInt("level"));
         return player;
     }
 
     private void updateEnemy (Enemy enemy){
         //subject to change or removal depending on game play implementation
         enemy.saveInBackground();
-    }
-
-    private void testFunctionToChangeEnemyData(Enemy enemy){
-        //remove later
-        enemy.setHealth(enemy.getHealth() + 25);
-        enemy.setStrength(enemy.getStrength() + 5);
-        enemy.setDefense(enemy.getDefense() + 5);
     }
 
     private void login(){
@@ -266,6 +276,19 @@ public class GameActivity extends AppCompatActivity {
         mUserId = mPrefs.getString(USER_KEY, "none");
         mUser = ParseUser.getCurrentUser();
         player = setPlayerInfo(mUser);
+        // Quick dump of info if needed for testing...
+        /*Log.d("DEBUG", "Start Player Health: " + Integer.toString(player.getOverAllHealth()));
+        Log.d("DEBUG", "Start Player Strength: " + Integer.toString(player.getStrength()));
+        Log.d("DEBUG", "Start Player Defense: " + Integer.toString(player.getDefense()));
+        Log.d("DEBUG", "Start Player Level: " + Integer.toString(player.getLevel()));
+         */
+        player.calcStats(player.getLevel());
+        currentLevel = player.getLevel();
+        /*Log.d("DEBUG", "New Player Health: " + Integer.toString(player.getOverAllHealth()));
+        Log.d("DEBUG", "New Player Strength: " + Integer.toString(player.getStrength()));
+        Log.d("DEBUG", "New Player Defense: " + Integer.toString(player.getDefense()));
+        Log.d("DEBUG", "New Player Level: " + Integer.toString(player.getLevel()));
+         */
     }
 
     private void getPrefs(){
