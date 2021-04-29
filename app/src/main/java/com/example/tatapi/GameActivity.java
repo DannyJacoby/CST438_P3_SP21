@@ -166,7 +166,7 @@ public class GameActivity extends AppCompatActivity {
         return (currentHealth);
     }
 
-    private void executeTurn(int type){
+    private void executeTurn(int type){ // TODO replace with recyvlerView
         //type 0 will be attack
         if(lineCount + 1 > 8){
             battleView.setText("");

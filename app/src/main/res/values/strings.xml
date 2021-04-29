@@ -33,4 +33,5 @@
     <string name="back4app_client_key">aHmAPDNNQqh08PYWuaD1vfsEwlDgMkJoVsYo6CXq</string>
     <string name="leaderboardString">Leaderboard</string>
     <string name="adminString">Admin</string>
+    <string name="adminWelcomeStr">Welcome to Admin </string>
 </resources>

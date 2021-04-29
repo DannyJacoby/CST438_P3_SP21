@@ -64,11 +64,11 @@ public class HomeActivity extends AppCompatActivity {
         leaderboardBtn.setOnClickListener(v -> {
             Intent intent = LeaderboardActivity.intent_factory(this);
             startActivity(intent);
-            snackMaker("You clicked Leaderboard");
         });
 
         adminBtn.setOnClickListener(v -> {
-            snackMaker("You clicked admin congrats!");
+            Intent intent = AdminActivity.intent_factory(this);
+            startActivity(intent);
         });
 
         logoutBtn.setOnClickListener(v ->{
