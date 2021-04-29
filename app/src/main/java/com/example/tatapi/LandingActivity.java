@@ -64,7 +64,7 @@ public class LandingActivity extends AppCompatActivity {
         }
 
         mUserId = mPrefs.getString(USER_KEY, "none");
-        if(mUserId != "none"){
+        if(mUserId != "none"){ // !mUserId.equals("none")
             Intent intent = HomeActivity.intent_factory(this);
             startActivity(intent);
             return;

@@ -1,81 +1,70 @@
 package com.example.tatapi.models;
 
-import com.parse.ParseObject;
-import com.parse.ParseClassName;
 import com.parse.ParseUser;
 
 import java.util.Random;
 
-@ParseClassName("Enemy")
-public class Enemy extends ParseObject {
-
-    private String name;
+public class User {
+    private String username;
     private int health;
-    private int overallHealth;
+    private int overAllHealth;
     private int strength;
     private int defense;
-    private String description;
-
-    public Enemy(){
-
-    }
-
-    public String getObjectId() {
-        return getString("objectId");
-    }
-
-    public String getName() {
-        return getString("name");
-    }
-
-    public void setName(String name) {
-        put("name", name);
-    }
+    private int level;
 
     public int getHealth() {
-        return getInt("health");
+        return health;
     }
 
     public void setHealth(int health) {
-        put("health", health);
+        this.health = health;
     }
 
-    public int getOverallHealth() {
-        return getInt("overallHealth");
+    public int getOverAllHealth() {
+        return overAllHealth;
     }
 
-    public void setOverallHealth(int overallHealth) {
-        put("overallHealth", overallHealth);
+    public void setOverAllHealth(int overAllHealth) {
+        this.overAllHealth = overAllHealth;
     }
 
     public int getStrength() {
-        return getInt("strength");
+        return strength;
     }
 
     public void setStrength(int strength) {
-        put("strength", strength);
+        this.strength = strength;
     }
 
     public int getDefense() {
-        return getInt("defense");
+        return defense;
     }
 
     public void setDefense(int defense) {
-        put("defense", defense);
+        this.defense = defense;
+    }
+    public String getUsername(){
+        return username;
+    }
+    public void setUsername(String username){
+        this.username = username;
     }
 
-    public String getDescription() {
-        return getString("description");
+    public int getLevel(){
+        return level;
+    }
+    public void setLevel(int level){
+        this.level = level;
     }
 
-    public void setDescription(String description) {
-        put("description", description);
+    public User(){
+
     }
 
     public void calcStats(int level){
-        int baseHealth = getOverallHealth();
-        int baseStrength = getStrength();
-        int baseDefense = getDefense();
+        int baseHealth = this.overAllHealth;
+        int baseStrength = this.strength;
+        int baseDefense = this.defense;
         Random randomGen = new Random();
         //range is 0 to 5, they should get at least 1 point
         int randomHealthModifier = randomGen.nextInt(5);
@@ -99,8 +88,7 @@ public class Enemy extends ParseObject {
         baseStrength += (randomStrengthModifier * level);
         baseDefense += (randomDefenseModifier * level);
 
-        setOverallHealth(baseHealth);
-        setHealth(baseHealth);
+        setOverAllHealth(baseHealth);
         setStrength(baseStrength);
         setDefense(baseDefense);
         return;

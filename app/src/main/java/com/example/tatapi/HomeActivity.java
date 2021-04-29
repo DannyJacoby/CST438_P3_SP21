@@ -28,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private String mUserId = "none";
-    ParseUser mUser;
+    private ParseUser mUser;
 
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
@@ -37,12 +37,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mUser = ParseUser.getCurrentUser();
-        getDatabase();
+
         login();
         wireUp();
-        welcomeMsg.setText("Welcome to TATAPI " + mUser.getString("username"));
-
 
     }
 
@@ -53,6 +50,9 @@ public class HomeActivity extends AppCompatActivity {
         logoutBtn = findViewById(R.id.logoutBtn);
         welcomeMsg = findViewById(R.id.welcomeHomeTextView);
 
+        String wMsg = "Welcome to TATAPI " + mUser.getString("username");
+        welcomeMsg.setText(wMsg);
+
         adminBtn.setVisibility( (mUser.getBoolean("isAdmin")) ? View.VISIBLE : View.INVISIBLE);
 
         playBtn.setOnClickListener(v -> {
@@ -62,11 +62,13 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         leaderboardBtn.setOnClickListener(v -> {
-            snackMaker("You clicked Leaderboard");
+            Intent intent = LeaderboardActivity.intent_factory(this);
+            startActivity(intent);
         });
 
         adminBtn.setOnClickListener(v -> {
-            snackMaker("You clicked admin congrats!");
+            Intent intent = AdminActivity.intent_factory(this);
+            startActivity(intent);
         });
 
         logoutBtn.setOnClickListener(v ->{
@@ -79,6 +81,7 @@ public class HomeActivity extends AppCompatActivity {
             getPrefs();
         }
         mUserId = mPrefs.getString(USER_KEY, "none");
+        mUser = ParseUser.getCurrentUser();
     }
 
     private void logout(){
@@ -99,6 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         //mUserDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME).allowMainThreadQueries().build().getUserDAO();
 
     }
+
     private void getPrefs(){
         mPrefs = getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
         mEdit = mPrefs.edit();
