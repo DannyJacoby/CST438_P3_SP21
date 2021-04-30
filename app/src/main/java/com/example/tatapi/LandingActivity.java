@@ -25,7 +25,7 @@ public class LandingActivity extends AppCompatActivity {
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
 
-    private String mUserId = "none";
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +63,10 @@ public class LandingActivity extends AppCompatActivity {
             getPrefs();
         }
 
-        mUserId = mPrefs.getString(USER_KEY, "none");
-        if(mUserId != "none"){ // !mUserId.equals("none")
+        mUserId = mPrefs.getString(USER_KEY, null);
+        if (mUserId != null) {
             Intent intent = HomeActivity.intent_factory(this);
             startActivity(intent);
-            return;
         }
     }
 

@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
 
-    private String mUserId = "none";
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         if(m_amLogin){
             ParseUser.logInInBackground(m_Username, m_Password, (parseUser, e) -> {
                 if (parseUser != null) {
+                    mUserId = parseUser.getObjectId();
                     snackMaker("Successful Login");
                     loginSuccess();
                 } else {
