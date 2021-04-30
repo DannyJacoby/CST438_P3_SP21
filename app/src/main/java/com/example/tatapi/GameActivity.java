@@ -24,6 +24,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.List;
+import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
     protected static final String PREF_KEY = LandingActivity.PREF_KEY;
@@ -52,6 +53,8 @@ public class GameActivity extends AppCompatActivity {
     private int turnCount;
     private int enemiesDefeated;
     private int currentLevel;
+    private boolean dead = false;
+    private boolean levelUp = false;
 
 
     @Override
@@ -75,51 +78,32 @@ public class GameActivity extends AppCompatActivity {
         itemButton = findViewById(R.id.item_button);
         healthView = findViewById(R.id.health_text);
         battleView = findViewById(R.id.battle_text);
-        //healthView.setText(currentHealthDisplay());
 
-        //wrapped these in a conditional, we should probably handle this better, but this works for now
         attackButton.setOnClickListener(v -> {
-            updateHealthView();
-            updateBattleView();
-
-            //using for test purposes (remove later)
-            //testFunctionToChangeEnemyData(testEnemy);
             updateEnemy(testEnemy);
-//            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
-//                executeTurn(0);
-//                turnCount++;
-//            }
-//            else if(mUser.getDead() == true){
-//                healthView.setText(currentHealthDisplay());
-//                snackMaker("can't do anything, you're dead!");
-//                Log.d("EVENT", "Survived " + turnCount + " turns.");
-//            }
-//            else{
-//                snackMaker("Enemy is dead, level up and grab a new monster");
-//                //level up here
-//                enemiesDefeated++;
-//            }
+            executeTurn(0);
+            turnCount++;
+
+            /*if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
+                executeTurn(0);
+                turnCount++;
+            }
+            else if(mUser.getDead() == true){
+                healthView.setText(currentHealthDisplay());
+                snackMaker("can't do anything, you're dead!");
+                Log.d("EVENT", "Survived " + turnCount + " turns.");
+            }
+            else{
+                snackMaker("Enemy is dead, level up and grab a new monster");
+                //level up here
+                enemiesDefeated++;
+            }*/
         });
 
         defendButton.setOnClickListener(v -> {
-            //snackMaker("Defending...");
-
-            //Using this to test accessing enemy data (remove later)
-            //snackMaker(testEnemy.getDescription());
-            snackMaker(Integer.toString(testEnemy.getHealth()));
-//            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
-//                executeTurn(1);
-//                turnCount++;
-//            }
-//            else if(mUser.getDead() == true){
-//                snackMaker("can't do anything, you're dead!");
-//                Log.d("EVENT", "Survived " + turnCount + " turns.");
-//            }
-//            else{
-//                snackMaker("Enemy is dead, level up and grab a new monster");
-//                //level up here
-//                enemiesDefeated++;
-//            }
+            updateEnemy(testEnemy);
+            executeTurn(1);
+            turnCount++;
         });
 
         itemButton.setOnClickListener(v -> {
@@ -166,47 +150,123 @@ public class GameActivity extends AppCompatActivity {
         return (currentHealth);
     }
 
-    private void executeTurn(int type){ // TODO replace with recyvlerView
+    private void executeTurn(int type){ // TODO replace with recyclerView
         //type 0 will be attack
         if(lineCount + 1 > 8){
             battleView.setText("");
             lineCount = 0;
         }
         if(type == 0){
-            //replace with damage calulation
-//            dummyEnemy.takeDamage(50.0f);
+            //damage calculation formula
+            Random rand = new Random();
+            int damage = rand.nextInt(player.getStrength());
+            if(testEnemy.getHealth() - damage <= 0){
+                //dead
+                testEnemy.setHealth(0);
+                levelUp = true;
+            }
+            else{
+                int newHealth = testEnemy.getHealth();
+                newHealth -= damage;
+                testEnemy.setHealth(newHealth);
+            }
+            //update display
             healthView.setText(currentHealthDisplay());
-//            battleView.append(dummyEnemy.getName() + " took " + 50.0f + " damage.\n");
+            if(levelUp){
+                battleView.append(testEnemy.getName() + " took mortal damage!\n");
+            }
+            else{
+                battleView.append(testEnemy.getName() + " took " + damage + " damage!\n");
+            }
             lineCount++;
-            //using a handler + runnable to delay an action so an enemy's attack is not instant
-            //supposedly each view has its own handler, not sure what it actually is though
-            //this works for now
-            //https://stackoverflow.com/questions/14186846/delay-actions-in-android
-            //https://developer.android.com/reference/android/os/Handler
-            battleHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //replace with damage calculation
-//                    mUser.takeDamage(25.0f);
-                    healthView.setText(currentHealthDisplay());
-                    battleView.append("Player took " + 25.0f + " damage.\n");
-                    lineCount++;
-                }
-            }, 2000);
+            //if enemy is defeated...
+            if(levelUp){
+                //load a new monster
+                snackMaker("Need to load a new monster");
+                //increase level
+                currentLevel += 1;
+                enemiesDefeated++;
+                player.setLevel(currentLevel);
+                levelUp = false;
+            } else{
+                //using a handler + runnable to delay an action so an enemy's attack is not instant
+                //supposedly each view has its own handler, not sure what it actually is though
+                //this works for now
+                //https://stackoverflow.com/questions/14186846/delay-actions-in-android
+                //https://developer.android.com/reference/android/os/Handler
+                battleHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Random rand = new Random();
+                        int damage = rand.nextInt(testEnemy.getStrength());
+                        if(player.getHealth() - damage <= 0){
+                            //dead
+                            player.setHealth(0);
+                            dead = true;
+                        }
+                        else{
+                            int newHealth = player.getHealth();
+                            newHealth -= damage;
+                            player.setHealth(newHealth);
+                        }
+                        //update display
+                        healthView.setText(currentHealthDisplay());
+                        if(dead){
+                            battleView.append(player.getUsername() + " took mortal damage!\n");
+                        }
+                        else{
+                            battleView.append(player.getUsername() + " took " + damage + " damage!\n");
+                        }
+                        lineCount++;
+                        healthView.setText(currentHealthDisplay());
+                        if(dead){
+                            snackMaker("Pop-up message here informing player they died at level " + currentLevel + ".");
+                        }
+                    }
+                }, 2000);
+            }
         }
         //type 1 will be defend
         if(type == 1){
-            battleView.append("Player defended.\n");
+            battleView.append(player.getUsername() + " defended.\n");
             lineCount++;
             battleHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     //replace with defense calculation
-                    float damage = 25.0f/2.0f;
-//                    mUser.takeDamage(damage);
+                    Random rand = new Random();
+                    //nope, you might get negative values!
+                    int damage = rand.nextInt(testEnemy.getStrength());
+                    if(damage - rand.nextInt(player.getDefense()) <= 0){
+                        damage = 0;
+                    }
+                    if(player.getHealth() - damage <= 0){
+                        //dead
+                        player.setHealth(0);
+                        dead = true;
+                    }
+                    else{
+                        int newHealth = player.getHealth();
+                        newHealth -= damage;
+                        player.setHealth(newHealth);
+                    }
+                    //update display
                     healthView.setText(currentHealthDisplay());
-                    battleView.append("Player took " + damage + " damage.\n");
+                    if(dead){
+                        battleView.append(player.getUsername() + " took mortal damage!\n");
+                    }
+                    else{
+                        if(damage <= 0){
+                            battleView.append(testEnemy.getName() + " missed!\n");
+                        }else{
+                            battleView.append(player.getUsername() + " took " + damage + " damage!\n");
+                        }
+                    }
                     lineCount++;
+                    healthView.setText(currentHealthDisplay());
+                    if(dead){
+                        snackMaker("Pop-up message here informing player they died at level " + currentLevel + ".");
+                    }
                 }
             }, 2000);
         }
