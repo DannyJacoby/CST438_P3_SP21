@@ -404,7 +404,7 @@ public class GameActivity extends AppCompatActivity {
 
         alertBuilder.setNegativeButton("Done", (dialog, which) -> {
             //Don't need to do anything here
-            snackMaker("You clicked NO");
+            snackMaker("Back to the game");
         });
 
         alertBuilder.create().show();
