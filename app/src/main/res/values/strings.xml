@@ -34,4 +34,6 @@
     <string name="leaderboardString">Leaderboard</string>
     <string name="adminString">Admin</string>
     <string name="adminWelcomeStr">Welcome to Admin </string>
+    <string name="battleStartText">Battle Has Started!
+    </string>
 </resources>

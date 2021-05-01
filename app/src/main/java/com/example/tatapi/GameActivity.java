@@ -1,28 +1,28 @@
 package com.example.tatapi;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tatapi.models.User;
 import com.example.tatapi.models.Enemy;
 import com.google.android.material.snackbar.Snackbar;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -33,14 +33,16 @@ public class GameActivity extends AppCompatActivity {
     public Button attackButton;
     public Button defendButton;
     public Button itemButton;
+
+    public ImageButton mEnemyIcon;
+
     public TextView healthView;
+
     public TextView battleView;
 
     private String mUserId = "none";
     private ParseUser mUser;
     private User player;
-
-
 
     private Enemy testEnemy;
 
@@ -49,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
 
     private Handler battleHandler = new Handler();
     private int lineCount;
+    private List<String> mBattleLog = new ArrayList<String>();
     //these should be exported or maybe just added onto the user object
     private int turnCount;
     private int enemiesDefeated;
@@ -70,6 +73,8 @@ public class GameActivity extends AppCompatActivity {
         lineCount = 0;
         turnCount = 0;
         enemiesDefeated = 0;
+
+        refreshDisplay("A Battle has Started!");
     }
 
     private void wireUp(){
@@ -78,6 +83,14 @@ public class GameActivity extends AppCompatActivity {
         itemButton = findViewById(R.id.item_button);
         healthView = findViewById(R.id.health_text);
         battleView = findViewById(R.id.battle_text);
+        battleView.setMovementMethod(new ScrollingMovementMethod());
+
+        mEnemyIcon = findViewById(R.id.imgBtn);
+        //TODO here's where you can put whatever the enemies picture would be, or we could replace it with something else like a basic bad guy look alike
+        mEnemyIcon.setImageResource(R.drawable.goblin);
+        mEnemyIcon.setOnClickListener(v -> {
+            alertMaker(testEnemy.getDescription());
+        });
 
         attackButton.setOnClickListener(v -> {
             updateEnemy(testEnemy);
@@ -153,7 +166,8 @@ public class GameActivity extends AppCompatActivity {
     private void executeTurn(int type){ // TODO replace with recyclerView
         //type 0 will be attack
         if(lineCount + 1 > 8){
-            battleView.setText("");
+//            battleView.setText(""); // TODO recycle? Starting Battle?
+            refreshDisplay("Battle has started!");
             lineCount = 0;
         }
         if(type == 0){
@@ -173,10 +187,12 @@ public class GameActivity extends AppCompatActivity {
             //update display
             healthView.setText(currentHealthDisplay());
             if(levelUp){
-                battleView.append(testEnemy.getName() + " took mortal damage!\n");
+//                battleView.append(testEnemy.getName() + " took mortal damage!\n"); // TODO recycle?
+                refreshDisplay(testEnemy.getName() + " took mortal damage!");
             }
             else{
-                battleView.append(testEnemy.getName() + " took " + damage + " damage!\n");
+//                battleView.append(testEnemy.getName() + " took " + damage + " damage!\n"); // TODO recycle?
+                refreshDisplay(testEnemy.getName() + " took " + damage + " damage!");
             }
             lineCount++;
             //if enemy is defeated...
@@ -212,15 +228,18 @@ public class GameActivity extends AppCompatActivity {
                         //update display
                         healthView.setText(currentHealthDisplay());
                         if(dead){
-                            battleView.append(player.getUsername() + " took mortal damage!\n");
+//                            battleView.append(player.getUsername() + " took mortal damage!\n"); // TODO recycle?
+                            refreshDisplay(player.getUsername() + " took mortal damage!");
                         }
                         else{
-                            battleView.append(player.getUsername() + " took " + damage + " damage!\n");
+//                            battleView.append(player.getUsername() + " took " + damage + " damage!\n"); // TODO recycle?
+                            refreshDisplay(player.getUsername() + " took " + damage + " damage!");
                         }
                         lineCount++;
                         healthView.setText(currentHealthDisplay());
                         if(dead){
                             snackMaker("Pop-up message here informing player they died at level " + currentLevel + ".");
+                            // TODO amDead function?
                         }
                     }
                 }, 2000);
@@ -228,7 +247,7 @@ public class GameActivity extends AppCompatActivity {
         }
         //type 1 will be defend
         if(type == 1){
-            battleView.append(player.getUsername() + " defended.\n");
+//            battleView.append(player.getUsername() + " defended.\n");
             lineCount++;
             battleHandler.postDelayed(new Runnable() {
                 @Override
@@ -253,19 +272,23 @@ public class GameActivity extends AppCompatActivity {
                     //update display
                     healthView.setText(currentHealthDisplay());
                     if(dead){
-                        battleView.append(player.getUsername() + " took mortal damage!\n");
+//                        battleView.append(player.getUsername() + " took mortal damage!\n"); // TODO recycle?
+                        refreshDisplay(player.getUsername() + " took mortal damage!");
                     }
                     else{
                         if(damage <= 0){
-                            battleView.append(testEnemy.getName() + " missed!\n");
+//                            battleView.append(testEnemy.getName() + " missed!\n"); // TODO recycle?
+                            refreshDisplay(testEnemy.getName() + " missed!");
                         }else{
-                            battleView.append(player.getUsername() + " took " + damage + " damage!\n");
+//                            battleView.append(player.getUsername() + " took " + damage + " damage!\n"); // TODO recycle?
+                            refreshDisplay(player.getUsername() + " took " + damage + " damage!");
                         }
                     }
                     lineCount++;
                     healthView.setText(currentHealthDisplay());
                     if(dead){
                         snackMaker("Pop-up message here informing player they died at level " + currentLevel + ".");
+                        // TODO replace with amDead function?
                     }
                 }
             }, 2000);
@@ -273,13 +296,13 @@ public class GameActivity extends AppCompatActivity {
         //type 2 will be item? if we're still going to do that
     }
 
-    private void updateHealthView(){
-        snackMaker("Do some attacks here, update the hp values");
-    }
+//    private void updateHealthView(){
+//        snackMaker("Do some attacks here, update the hp values");
+//    }
 
-    private void updateBattleView(){
-        battleView.setText("doing some sick attacks right now...");
-    }
+//    private void updateBattleView(){
+//        battleView.setText("doing some sick attacks right now...");
+//    }
 
     private void getEnemy(String enemyId){
         //subject to change depending on game play implementation
@@ -351,9 +374,40 @@ public class GameActivity extends AppCompatActivity {
          */
     }
 
+    private void refreshDisplay(String str){
+        if(mBattleLog.size() <= 0){
+            String s = "A Battle has Started!";
+            battleView.setText("A Battle has Started!");
+            mBattleLog.add(s);
+            return;
+        }
+
+        mBattleLog.add(str);
+
+        StringBuilder sb = new StringBuilder();
+        for(String log : mBattleLog){
+            sb.append(log);
+            sb.append("\n");
+        }
+        battleView.setText(sb);
+    }
+
     private void getPrefs(){
         mPrefs = this.getSharedPreferences(PREF_KEY, 0);
         mEdit = mPrefs.edit();
+    }
+
+    private void alertMaker(String message){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+
+        alertBuilder.setMessage(message);
+
+        alertBuilder.setNegativeButton("Done", (dialog, which) -> {
+            //Don't need to do anything here
+            snackMaker("You clicked NO");
+        });
+
+        alertBuilder.create().show();
     }
 
     private void snackMaker(String message){
