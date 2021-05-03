@@ -17,7 +17,12 @@ public class Enemy extends ParseObject {
     private String description;
 
     public Enemy(){
-
+        this.name = "";
+        this.health = 0;
+        this.overallHealth = 0;
+        this.strength = 0;
+        this.defense = 0;
+        this.description = "";
     }
 
     public String getObjectId() {

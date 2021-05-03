@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,8 +18,10 @@ import android.widget.TextView;
 import com.example.tatapi.models.User;
 import com.example.tatapi.models.Enemy;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -43,8 +46,7 @@ public class GameActivity extends AppCompatActivity {
     private String mUserId = "none";
     private ParseUser mUser;
     private User player;
-
-    private Enemy testEnemy;
+    private Enemy testEnemy = new Enemy();
 
     private SharedPreferences mPrefs = null;
     private SharedPreferences.Editor mEdit;
@@ -66,14 +68,14 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         // this will be called each time an enemy dies?
-        getEnemy("yQLZKAoZ7Y");
+        getEnemy();
 
         wireUp();
         login();
+
         lineCount = 0;
         turnCount = 0;
         enemiesDefeated = 0;
-
         refreshDisplay("A Battle has Started!");
     }
 
@@ -93,7 +95,6 @@ public class GameActivity extends AppCompatActivity {
         });
 
         attackButton.setOnClickListener(v -> {
-            updateEnemy(testEnemy);
             executeTurn(0);
             turnCount++;
 
@@ -114,7 +115,6 @@ public class GameActivity extends AppCompatActivity {
         });
 
         defendButton.setOnClickListener(v -> {
-            updateEnemy(testEnemy);
             executeTurn(1);
             turnCount++;
         });
@@ -304,14 +304,43 @@ public class GameActivity extends AppCompatActivity {
 //        battleView.setText("doing some sick attacks right now...");
 //    }
 
-    private void getEnemy(String enemyId){
+    private void getEnemy(){
+        //check for existing enemy user may have
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("savedEnemy");
+        query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> savedEnemy, ParseException e) {
+                if (e == null) {
+                    if(savedEnemy.size() > 0) {
+                        testEnemy.setName(savedEnemy.get(0).getString("name"));
+                        testEnemy.setHealth(savedEnemy.get(0).getInt("health"));
+                        testEnemy.setOverallHealth(savedEnemy.get(0).getInt("overallHealth"));
+                        testEnemy.setStrength(savedEnemy.get(0).getInt("strength"));
+                        testEnemy.setDefense(savedEnemy.get(0).getInt("defense"));
+                        testEnemy.setDescription(savedEnemy.get(0).getString("description"));
+
+                    } else {
+                        getNewEnemy();
+                    }
+                } else {
+                    snackMaker(e.getMessage());
+                }
+            }
+        });
+    }
+
+    private void getNewEnemy(){
         //subject to change depending on game play implementation
         ParseQuery<Enemy> query = ParseQuery.getQuery("Enemy");
-        query.getInBackground(enemyId, new GetCallback<Enemy>() {
-            public void done(Enemy tempEnemy, ParseException e) {
+        query.findInBackground(new FindCallback<Enemy>() {
+            @Override
+            public void done(List<Enemy> enemies, final ParseException e) {
                 if (e == null) {
-                    //snackMaker("pulled " + tempEnemy.getName() + " from db");
+                    int random = (int)Math.floor(Math.random() * enemies.size());
+                    Enemy tempEnemy = enemies.get(random);
+                    //snackMaker(tempEnemy.getName());
                     testEnemy = tempEnemy;
+                    snackMaker(testEnemy.getName());
                     // Quick dump of info if needed for testing...
                     /*
                     Log.d("DEBUG", "Start Enemy OverallHealth: " + Integer.toString(testEnemy.getOverallHealth()));
@@ -345,6 +374,16 @@ public class GameActivity extends AppCompatActivity {
         player.setDefense(currentUser.getInt("defense"));
         player.setLevel(currentUser.getInt("level"));
         return player;
+    }
+
+    private void updateUserInfo(User player){
+        ParseUser updateUser = ParseUser.getCurrentUser();
+        updateUser.put("health", player.getHealth());
+        updateUser.put("overallHealth", player.getOverAllHealth());
+        updateUser.put("strength", player.getStrength());
+        updateUser.put("defense", player.getDefense());
+        updateUser.put("level", player.getLevel());
+        updateUser.saveInBackground();
     }
 
     private void updateEnemy (Enemy enemy){
@@ -420,5 +459,39 @@ public class GameActivity extends AppCompatActivity {
     public static Intent intent_factory(Context context){
         Intent intent = new Intent(context, GameActivity.class);
         return intent;
+    }
+
+    @Override
+    public void onBackPressed() {
+        //delete old enemy save if it exists
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("savedEnemy");
+        query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> save, ParseException e) {
+                if (e == null) {
+                    if(save.size() > 0) {
+                        save.get(0).deleteInBackground();
+                    }
+                } else {
+                    snackMaker(e.getMessage());
+                }
+            }
+        });
+        //save current enemy
+        ParseObject saveEnemy = new ParseObject("savedEnemy");
+        saveEnemy.put("name", testEnemy.getName().toString());
+        saveEnemy.put("health", testEnemy.getHealth());
+        saveEnemy.put("overallHealth", testEnemy.getOverallHealth());
+        saveEnemy.put("strength", testEnemy.getDefense());
+        saveEnemy.put("defense", testEnemy.getDefense());
+        saveEnemy.put("description", testEnemy.getDescription());
+        saveEnemy.put("user", ParseUser.getCurrentUser().getObjectId());
+        saveEnemy.saveInBackground();
+        //update user with player stats
+        updateUserInfo(player);
+
+        Intent intent = HomeActivity.intent_factory(this);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }
