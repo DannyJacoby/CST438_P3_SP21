@@ -319,6 +319,10 @@ public class GameActivity extends AppCompatActivity {
                         testEnemy.setDefense(savedEnemy.get(0).getInt("defense"));
                         testEnemy.setDescription(savedEnemy.get(0).getString("description"));
 
+                        healthView.setText(savedEnemy.get(0).getString("healthViewTxt"));
+                        battleView.setText(savedEnemy.get(0).getString("battleViewTxt"));
+                        mBattleLog.add(savedEnemy.get(0).getString("battleViewTxt"));
+
                     } else {
                         getNewEnemy();
                     }
@@ -486,6 +490,8 @@ public class GameActivity extends AppCompatActivity {
         saveEnemy.put("defense", testEnemy.getDefense());
         saveEnemy.put("description", testEnemy.getDescription());
         saveEnemy.put("user", ParseUser.getCurrentUser().getObjectId());
+        saveEnemy.put("healthViewTxt", healthView.getText().toString());
+        saveEnemy.put("battleViewTxt", battleView.getText().toString());
         saveEnemy.saveInBackground();
         //update user with player stats
         updateUserInfo(player);
