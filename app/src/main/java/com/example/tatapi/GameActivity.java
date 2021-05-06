@@ -364,6 +364,8 @@ public class GameActivity extends AppCompatActivity {
                     //snackMaker(tempEnemy.getName());
                     testEnemy = tempEnemy;
                     snackMaker(testEnemy.getName());
+                    // TODO put shit here
+                    
                     // Quick dump of info if needed for testing...
                     /*
                     Log.d("DEBUG", "Start Enemy OverallHealth: " + Integer.toString(testEnemy.getOverallHealth()));
