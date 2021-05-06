@@ -339,7 +339,11 @@ public class GameActivity extends AppCompatActivity {
                         mBattleLog.add(savedEnemy.get(0).getString("battleViewTxt"));
 
                     } else {
+                        // Player should only have no enemy if they've never played before.
                         getNewEnemy();
+                        player.setLevel(1);
+                        player.calcStats(player.getLevel());
+                        currentLevel = player.getLevel();
                     }
                 } else {
                     snackMaker(e.getMessage());
@@ -424,8 +428,7 @@ public class GameActivity extends AppCompatActivity {
         Log.d("DEBUG", "Start Player Defense: " + Integer.toString(player.getDefense()));
         Log.d("DEBUG", "Start Player Level: " + Integer.toString(player.getLevel()));
          */
-        player.calcStats(player.getLevel());
-        currentLevel = player.getLevel();
+
         /*
         Log.d("DEBUG", "New Player Health: " + Integer.toString(player.getOverAllHealth()));
         Log.d("DEBUG", "New Player Strength: " + Integer.toString(player.getStrength()));
