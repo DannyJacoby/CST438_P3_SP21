@@ -89,6 +89,8 @@ public class User {
         baseDefense += (randomDefenseModifier * level);
 
         setOverAllHealth(baseHealth);
+        //this was missing...
+        setHealth(baseHealth);
         setStrength(baseStrength);
         setDefense(baseDefense);
         return;
