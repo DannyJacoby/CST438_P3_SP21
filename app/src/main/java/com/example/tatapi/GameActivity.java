@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -74,7 +75,6 @@ public class GameActivity extends AppCompatActivity {
         lineCount = 0;
         turnCount = 0;
         enemiesDefeated = 0;
-        refreshDisplay("A Battle has Started!");
     }
 
     private void wireUp(){
@@ -87,10 +87,6 @@ public class GameActivity extends AppCompatActivity {
 
         mEnemyIcon = findViewById(R.id.imgBtn);
         //TODO here's where you can put whatever the enemies picture would be, or we could replace it with something else like a basic bad guy look alike
-        mEnemyIcon.setImageResource(R.drawable.goblin);
-        mEnemyIcon.setOnClickListener(v -> {
-            alertMaker(testEnemy.getDescription());
-        });
 
         attackButton.setOnClickListener(v -> {
             enableButtons(false);
@@ -197,23 +193,20 @@ public class GameActivity extends AppCompatActivity {
             lineCount++;
             //if enemy is defeated...
             if(levelUp){
-                battleHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //load a new monster
-                        snackMaker("Need to load a new monster");
-                        getNewEnemy();
-                        //increase level
-                        currentLevel += 1;
-                        enemiesDefeated++;
-                        player.setLevel(currentLevel);
-                        //increase stats
-                        //we should increase stats but don't give full heal
-                        //or come up with a way to full heal, maybe every 5 levels or something?
-                        //player.calcStats(player.getLevel());
-                        levelUp = false;
-                        enableButtons(true);
-                    }
+                battleHandler.postDelayed(() -> {
+                    //load a new monster
+                    snackMaker("Need to load a new monster");
+                    getNewEnemy();
+                    //increase level
+                    currentLevel += 1;
+                    enemiesDefeated++;
+                    player.setLevel(currentLevel);
+                    //increase stats
+                    //we should increase stats but don't give full heal
+                    //or come up with a way to full heal, maybe every 5 levels or something?
+                    //player.calcStats(player.getLevel());
+                    levelUp = false;
+                    enableButtons(true);
                 }, 1200);
             } else{
                 //using a handler + runnable to delay an action so an enemy's attack is not instant
@@ -221,39 +214,36 @@ public class GameActivity extends AppCompatActivity {
                 //this works for now
                 //https://stackoverflow.com/questions/14186846/delay-actions-in-android
                 //https://developer.android.com/reference/android/os/Handler
-                battleHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Random rand = new Random();
-                        int damage = rand.nextInt(testEnemy.getStrength());
-                        if(player.getHealth() - damage <= 0){
-                            //dead
-                            player.setHealth(0);
-                            dead = true;
-                        }
-                        else{
-                            int newHealth = player.getHealth();
-                            newHealth -= damage;
-                            player.setHealth(newHealth);
-                        }
-                        //update display
-                        healthView.setText(currentHealthDisplay());
-                        if(dead){
+                battleHandler.postDelayed(() -> {
+                    Random rand1 = new Random();
+                    int damage1 = rand1.nextInt(testEnemy.getStrength());
+                    if(player.getHealth() - damage1 <= 0){
+                        //dead
+                        player.setHealth(0);
+                        dead = true;
+                    }
+                    else{
+                        int newHealth = player.getHealth();
+                        newHealth -= damage1;
+                        player.setHealth(newHealth);
+                    }
+                    //update display
+                    healthView.setText(currentHealthDisplay());
+                    if(dead){
 //                            battleView.append(player.getUsername() + " took mortal damage!\n"); // TODO recycle?
-                            refreshDisplay(player.getUsername() + " took mortal damage!");
-                        }
-                        else{
+                        refreshDisplay(player.getUsername() + " took mortal damage!");
+                    }
+                    else{
 //                            battleView.append(player.getUsername() + " took " + damage + " damage!\n"); // TODO recycle?
-                            refreshDisplay(player.getUsername() + " took " + damage + " damage!");
-                        }
-                        lineCount++;
-                        healthView.setText(currentHealthDisplay());
-                        enableButtons(true);
-                        if(dead){
-                            onDeathAlert();
-                            //snackMaker("Pop-up message here informing player they died at level " + currentLevel + ".");
-                            // TODO amDead function?
-                        }
+                        refreshDisplay(player.getUsername() + " took " + damage1 + " damage!");
+                    }
+                    lineCount++;
+                    healthView.setText(currentHealthDisplay());
+                    enableButtons(true);
+                    if(dead){
+                        onDeathAlert();
+                        //snackMaker("Pop-up message here informing player they died at level " + currentLevel + ".");
+                        // TODO amDead function?
                     }
                 }, 2000);
             }
@@ -262,49 +252,46 @@ public class GameActivity extends AppCompatActivity {
         if(type == 1){
 //            battleView.append(player.getUsername() + " defended.\n");
             lineCount++;
-            battleHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //replace with defense calculation
-                    Random rand = new Random();
-                    //nope, you might get negative values!
-                    int damage = rand.nextInt(testEnemy.getStrength());
-                    if(damage - rand.nextInt(player.getDefense()) <= 0){
-                        damage = 0;
-                    }
-                    if(player.getHealth() - damage <= 0){
-                        //dead
-                        player.setHealth(0);
-                        dead = true;
-                    }
-                    else{
-                        int newHealth = player.getHealth();
-                        newHealth -= damage;
-                        player.setHealth(newHealth);
-                    }
-                    //update display
-                    healthView.setText(currentHealthDisplay());
-                    if(dead){
+            battleHandler.postDelayed(() -> {
+                //replace with defense calculation
+                Random rand = new Random();
+                //nope, you might get negative values!
+                int damage = rand.nextInt(testEnemy.getStrength());
+                if(damage - rand.nextInt(player.getDefense()) <= 0){
+                    damage = 0;
+                }
+                if(player.getHealth() - damage <= 0){
+                    //dead
+                    player.setHealth(0);
+                    dead = true;
+                }
+                else{
+                    int newHealth = player.getHealth();
+                    newHealth -= damage;
+                    player.setHealth(newHealth);
+                }
+                //update display
+                healthView.setText(currentHealthDisplay());
+                if(dead){
 //                        battleView.append(player.getUsername() + " took mortal damage!\n"); // TODO recycle?
-                        refreshDisplay(player.getUsername() + " took mortal damage!");
-                    }
-                    else{
-                        if(damage <= 0){
+                    refreshDisplay(player.getUsername() + " took mortal damage!");
+                }
+                else{
+                    if(damage <= 0){
 //                            battleView.append(testEnemy.getName() + " missed!\n"); // TODO recycle?
-                            refreshDisplay(testEnemy.getName() + " missed!");
-                        }else{
+                        refreshDisplay(testEnemy.getName() + " missed!");
+                    }else{
 //                            battleView.append(player.getUsername() + " took " + damage + " damage!\n"); // TODO recycle?
-                            refreshDisplay(player.getUsername() + " took " + damage + " damage!");
-                        }
+                        refreshDisplay(player.getUsername() + " took " + damage + " damage!");
                     }
-                    enableButtons(true);
-                    lineCount++;
-                    healthView.setText(currentHealthDisplay());
-                    if(dead){
-                        onDeathAlert();
-                        //snackMaker("Pop-up message here informing player they died at level " + currentLevel + ".");
-                        // TODO replace with amDead function?
-                    }
+                }
+                enableButtons(true);
+                lineCount++;
+                healthView.setText(currentHealthDisplay());
+                if(dead){
+                    onDeathAlert();
+                    //snackMaker("Pop-up message here informing player they died at level " + currentLevel + ".");
+                    // TODO replace with amDead function?
                 }
             }, 2000);
         }
@@ -338,6 +325,15 @@ public class GameActivity extends AppCompatActivity {
                         battleView.setText(savedEnemy.get(0).getString("battleViewTxt"));
                         mBattleLog.add(savedEnemy.get(0).getString("battleViewTxt"));
 
+                        // TODO abstract to function
+                        String enemyName = testEnemy.getName().toLowerCase();
+                        // NOTE: When adding in new enemy, add in drawable pic (~100x100 px) with name in lower case
+                        int resId = getResources().getIdentifier(enemyName, "drawable", getPackageName());
+                        mEnemyIcon.setImageResource(resId);
+                        mEnemyIcon.setOnClickListener(v -> {
+                            alertMaker(testEnemy.getDescription());
+                        });
+
                     } else {
                         // Player should only have no enemy if they've never played before.
                         getNewEnemy();
@@ -364,8 +360,16 @@ public class GameActivity extends AppCompatActivity {
                     //snackMaker(tempEnemy.getName());
                     testEnemy = tempEnemy;
                     snackMaker(testEnemy.getName());
-                    // TODO put shit here
-                    
+
+                    // TODO abstract to function
+                    String enemyName = testEnemy.getName().toLowerCase();
+                    // NOTE: When adding in new enemy, add in drawable pic (~100x100 px) with name in lower case
+                    int resId = getResources().getIdentifier(enemyName, "drawable", getPackageName());
+                    mEnemyIcon.setImageResource(resId);
+                    mEnemyIcon.setOnClickListener(v -> {
+                        alertMaker(testEnemy.getDescription());
+                    });
+
                     // Quick dump of info if needed for testing...
                     /*
                     Log.d("DEBUG", "Start Enemy OverallHealth: " + Integer.toString(testEnemy.getOverallHealth()));
@@ -440,21 +444,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void refreshDisplay(String str){
-        if(mBattleLog.size() <= 0){
-            String s = "A Battle has Started!";
-            battleView.setText("A Battle has Started!");
-            mBattleLog.add(s);
-            return;
-        }
-
-        mBattleLog.add(str);
-
-        StringBuilder sb = new StringBuilder();
-        for(String log : mBattleLog){
-            sb.append(log);
-            sb.append("\n");
-        }
-        battleView.setText(sb);
+        battleView.append('\n' + str);
     }
 
     private void getPrefs(){
