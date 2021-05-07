@@ -11,6 +11,7 @@ public class User {
     private int strength;
     private int defense;
     private int level;
+    private int itemUses;
 
     public int getHealth() {
         return health;
@@ -55,6 +56,13 @@ public class User {
     }
     public void setLevel(int level){
         this.level = level;
+    }
+
+    public int getItemUses() {
+        return itemUses;
+    }
+    public void setItemUses(int itemUses) {
+        this.itemUses = itemUses;
     }
 
     public User(){

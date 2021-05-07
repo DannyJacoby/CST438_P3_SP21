@@ -115,23 +115,7 @@ public class GameActivity extends AppCompatActivity {
             turnCount++;
         });
 
-        itemButton.setOnClickListener(v -> {
-            snackMaker("Using an item...");
-
-//            if(mUser.getDead() == false && dummyEnemy.getDead() == false) {
-//                snackMaker("Using an item...");
-//                turnCount++;
-//            }
-//            else if(mUser.getDead() == true){
-//                snackMaker("can't do anything, you're dead!");
-//                Log.d("EVENT", "Survived " + turnCount + " turns.");
-//            }
-//            else{
-//                snackMaker("Enemy is dead, level up and grab a new monster");
-//                //level up here
-//                enemiesDefeated++;
-//            }
-        });
+        itemButton.setOnClickListener(v -> useItem());
     }
 
     private String currentHealthDisplay() {
@@ -298,6 +282,23 @@ public class GameActivity extends AppCompatActivity {
         //type 2 will be item? if we're still going to do that
     }
 
+    private void useItem() {
+        // Deny player if no uses remain
+        int uses = player.getItemUses() - 1;
+        if (uses < 0) {
+            snackMaker("0 item uses left");
+            return;
+        }
+        // Decrement remaining item uses
+        player.setItemUses(uses);
+        snackMaker(uses + " item " + (uses == 1 ? "use" : "uses") + " left");
+        // Item heals 20% of the player's overall health
+        int hpHealed = (int) Math.ceil(0.2 * player.getOverAllHealth());
+        player.setHealth(Math.min(player.getHealth() + hpHealed, player.getOverAllHealth()));
+        refreshDisplay(player.getUsername() + " gained " + hpHealed + " health!");
+        healthView.setText(currentHealthDisplay());
+    }
+
 //    private void updateHealthView(){
 //        snackMaker("Do some attacks here, update the hp values");
 //    }
@@ -402,6 +403,7 @@ public class GameActivity extends AppCompatActivity {
         player.setStrength(currentUser.getInt("strength"));
         player.setDefense(currentUser.getInt("defense"));
         player.setLevel(currentUser.getInt("level"));
+        player.setItemUses(currentUser.getInt("itemUses"));
         return player;
     }
 
@@ -412,6 +414,7 @@ public class GameActivity extends AppCompatActivity {
         updateUser.put("strength", player.getStrength());
         updateUser.put("defense", player.getDefense());
         updateUser.put("level", player.getLevel());
+        updateUser.put("itemUses", player.getItemUses());
         updateUser.saveInBackground();
     }
 
@@ -487,6 +490,7 @@ public class GameActivity extends AppCompatActivity {
         enemiesDefeated = 0;
         player.setLevel(1);
         player.calcStats(player.getLevel());
+        player.setItemUses(3);
         //update user with player stats
         updateUserInfo(player);
         Intent intent = LandingActivity.intent_factory(this);
