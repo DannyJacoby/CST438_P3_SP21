@@ -418,6 +418,15 @@ public class GameActivity extends AppCompatActivity {
         updateUser.saveInBackground();
     }
 
+    private void updateHighScore() {
+        ParseUser user = ParseUser.getCurrentUser();
+        int prevHighScore = user.getInt("highScore");
+        if (player.getLevel() > prevHighScore) {
+            user.put("highScore", player.getLevel());
+            user.saveInBackground();
+        }
+    }
+
     private void updateEnemy (Enemy enemy){
         //subject to change or removal depending on game play implementation
         enemy.saveInBackground();
@@ -430,6 +439,7 @@ public class GameActivity extends AppCompatActivity {
         mUserId = mPrefs.getString(USER_KEY, "none");
         mUser = ParseUser.getCurrentUser();
         player = setPlayerInfo(mUser);
+        currentLevel = player.getLevel();
         // Quick dump of info if needed for testing...
         /*
         Log.d("DEBUG", "Start Player Health: " + Integer.toString(player.getOverAllHealth()));
@@ -483,6 +493,8 @@ public class GameActivity extends AppCompatActivity {
         alertBuilder.create().show();
     }
     private void onDeath(){
+        // Update player's high score
+        updateHighScore();
         //clear battle view on death
         battleView.setText("");
         currentLevel = 1;
@@ -520,6 +532,8 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // Update player's high score
+        updateHighScore();
         //delete old enemy save if it exists
         ParseQuery<ParseObject> query = ParseQuery.getQuery("savedEnemy");
         query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
