@@ -37,9 +37,7 @@ public class GameActivity extends AppCompatActivity {
     public Button itemButton;
 
     public ImageButton mEnemyIcon;
-
     public TextView healthView;
-
     public TextView battleView;
 
     private String mUserId = "none";
@@ -59,7 +57,7 @@ public class GameActivity extends AppCompatActivity {
     private int currentLevel;
     private boolean dead = false;
     private boolean levelUp = false;
-
+    private String prevEnemy = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +178,7 @@ public class GameActivity extends AppCompatActivity {
                 battleHandler.postDelayed(() -> {
                     //load a new monster
                     snackMaker("Need to load a new monster");
+                    prevEnemy = testEnemy.getName();
                     getNewEnemy();
                     //increase level
                     currentLevel += 1;
@@ -352,6 +351,7 @@ public class GameActivity extends AppCompatActivity {
     private void getNewEnemy(){
         //subject to change depending on game play implementation
         ParseQuery<Enemy> query = ParseQuery.getQuery("Enemy");
+        query.whereNotEqualTo("name", prevEnemy);
         query.findInBackground(new FindCallback<Enemy>() {
             @Override
             public void done(List<Enemy> enemies, final ParseException e) {
@@ -483,12 +483,16 @@ public class GameActivity extends AppCompatActivity {
         alertBuilder.create().show();
     }
     private void onDeath(){
-        //clear battleview on death
+        //clear battle view on death
         battleView.setText("");
         currentLevel = 1;
         turnCount = 0;
         enemiesDefeated = 0;
         player.setLevel(1);
+        player.setHealth(50);
+        player.setOverAllHealth(50);
+        player.setStrength(7);
+        player.setDefense(7);
         player.calcStats(player.getLevel());
         player.setItemUses(3);
         //update user with player stats
@@ -532,7 +536,7 @@ public class GameActivity extends AppCompatActivity {
         });
         //save current enemy
         ParseObject saveEnemy = new ParseObject("savedEnemy");
-        saveEnemy.put("name", testEnemy.getName().toString());
+        saveEnemy.put("name", testEnemy.getName());
         saveEnemy.put("health", testEnemy.getHealth());
         saveEnemy.put("overallHealth", testEnemy.getOverallHealth());
         saveEnemy.put("strength", testEnemy.getDefense());
