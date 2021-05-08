@@ -27,6 +27,14 @@
     <string name="welcomeHomeString">Welcome to TATAPI username</string>
     <string name="playString">Play</string>
     <string name="logoutString">Logout</string>
+    <string name="modEnemyStats">Modify Enemy Stats</string>
+    <string name="TagEnemyName">Enemy Name</string>
+    <string name="TagEnemyHealth">Enemy Health</string>
+    <string name="TagEnemyStrength">Enemy Strength</string>
+    <string name="TagEnemyDefense">Enemy Defense</string>
+    <string name="TagEnemyDescription">Enemy Description</string>
+    <string name="LoadStats">Load Stats</string>
+    <string name="UpdateStats">Update Stats</string>
     <!--  Back4app connection credentials  -->
     <string name="back4app_server_url">https://parseapi.back4app.com/</string>
     <string name="back4app_app_id">pvk0ILQ0nY0kop4xpDJweRiKpDqT9vsNx2OTiUNz</string>
@@ -36,4 +44,10 @@
     <string name="adminWelcomeStr">Welcome to Admin </string>
     <string name="battleStartText">Battle Has Started!
     </string>
+    <string name="title_activity_mod_enemy_stats">modEnemyStats</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>
