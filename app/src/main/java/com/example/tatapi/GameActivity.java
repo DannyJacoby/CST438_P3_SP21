@@ -187,7 +187,7 @@ public class GameActivity extends AppCompatActivity {
                     //increase stats
                     //we should increase stats but don't give full heal
                     //or come up with a way to full heal, maybe every 5 levels or something?
-                    //player.calcStats(player.getLevel());
+                    player.calcStats(player.getLevel());
                     levelUp = false;
                     enableButtons(true);
                 }, 1200);
@@ -338,8 +338,8 @@ public class GameActivity extends AppCompatActivity {
                         // Player should only have no enemy if they've never played before.
                         getNewEnemy();
                         //player.setLevel(1);
-                        //player.calcStats(player.getLevel());
-                        //currentLevel = player.getLevel();
+                        player.calcStats(player.getLevel());
+                        currentLevel = player.getLevel();
                     }
                 } else {
                     snackMaker(e.getMessage());
