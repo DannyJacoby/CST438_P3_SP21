@@ -49,7 +49,7 @@ public class GameActivity extends AppCompatActivity {
     private SharedPreferences.Editor mEdit;
 
     private Handler battleHandler = new Handler();
-    private int lineCount;
+    //private int lineCount;
     private List<String> mBattleLog = new ArrayList<String>();
     //these should be exported or maybe just added onto the user object
     private int turnCount;
@@ -70,7 +70,7 @@ public class GameActivity extends AppCompatActivity {
         wireUp();
         login();
 
-        lineCount = 0;
+        //lineCount = 0;
         turnCount = 0;
         enemiesDefeated = 0;
     }
@@ -143,11 +143,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void executeTurn(int type){ // TODO replace with recyclerView
         //type 0 will be attack
-        if(lineCount + 1 > 8){
-//            battleView.setText(""); // TODO recycle? Starting Battle?
-            refreshDisplay("Battle has started!");
-            lineCount = 0;
-        }
+        //Removed redundant battle has started code (it was getting called erratically anyway)
         if(type == 0){
             //damage calculation formula
             Random rand = new Random();
@@ -172,12 +168,12 @@ public class GameActivity extends AppCompatActivity {
 //                battleView.append(testEnemy.getName() + " took " + damage + " damage!\n"); // TODO recycle?
                 refreshDisplay(testEnemy.getName() + " took " + damage + " damage!");
             }
-            lineCount++;
+            //lineCount++;
             //if enemy is defeated...
             if(levelUp){
                 battleHandler.postDelayed(() -> {
                     //load a new monster
-                    snackMaker("Need to load a new monster");
+                    //snackMaker("Need to load a new monster");
                     prevEnemy = testEnemy.getName();
                     getNewEnemy();
                     //increase level
@@ -187,7 +183,11 @@ public class GameActivity extends AppCompatActivity {
                     //increase stats
                     //we should increase stats but don't give full heal
                     //or come up with a way to full heal, maybe every 5 levels or something?
-                    //player.calcStats(player.getLevel());
+                    int currentHealth = player.getHealth();
+                    player.calcStats(player.getLevel());
+                    if(!(player.getLevel() % 5 == 0)){
+                        player.setHealth(currentHealth);
+                    }
                     levelUp = false;
                     enableButtons(true);
                 }, 1200);
@@ -217,10 +217,16 @@ public class GameActivity extends AppCompatActivity {
                         refreshDisplay(player.getUsername() + " took mortal damage!");
                     }
                     else{
+                        //added missed message
+                        if(damage1 <= 0){
+//                            battleView.append(testEnemy.getName() + " missed!\n"); // TODO recycle?
+                            refreshDisplay(testEnemy.getName() + " missed!");
+                        }else {
 //                            battleView.append(player.getUsername() + " took " + damage + " damage!\n"); // TODO recycle?
-                        refreshDisplay(player.getUsername() + " took " + damage1 + " damage!");
+                            refreshDisplay(player.getUsername() + " took " + damage1 + " damage!");
+                        }
                     }
-                    lineCount++;
+                    //lineCount++;
                     healthView.setText(currentHealthDisplay());
                     enableButtons(true);
                     if(dead){
@@ -234,12 +240,12 @@ public class GameActivity extends AppCompatActivity {
         //type 1 will be defend
         if(type == 1){
 //            battleView.append(player.getUsername() + " defended.\n");
-            lineCount++;
+            //lineCount++;
             battleHandler.postDelayed(() -> {
                 //replace with defense calculation
                 Random rand = new Random();
                 //nope, you might get negative values!
-                int damage = rand.nextInt(testEnemy.getStrength());
+                int damage = rand.nextInt(testEnemy.getStrength() * 10);
                 if(damage - rand.nextInt(player.getDefense()) <= 0){
                     damage = 0;
                 }
@@ -269,7 +275,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 enableButtons(true);
-                lineCount++;
+                //lineCount++;
                 healthView.setText(currentHealthDisplay());
                 if(dead){
                     onDeathAlert();
@@ -294,7 +300,7 @@ public class GameActivity extends AppCompatActivity {
         // Item heals 20% of the player's overall health
         int hpHealed = (int) Math.ceil(0.2 * player.getOverAllHealth());
         player.setHealth(Math.min(player.getHealth() + hpHealed, player.getOverAllHealth()));
-        refreshDisplay(player.getUsername() + " gained " + hpHealed + " health!");
+        refreshDisplay(player.getUsername() + " regained " + hpHealed + " health!");
         healthView.setText(currentHealthDisplay());
     }
 
@@ -472,7 +478,7 @@ public class GameActivity extends AppCompatActivity {
 
         alertBuilder.setNegativeButton("Done", (dialog, which) -> {
             //Don't need to do anything here
-            snackMaker("Back to the game");
+            //snackMaker("Back to the game");
         });
 
         alertBuilder.create().show();
@@ -500,6 +506,7 @@ public class GameActivity extends AppCompatActivity {
         currentLevel = 1;
         turnCount = 0;
         enemiesDefeated = 0;
+        //lineCount = 0;
         player.setLevel(1);
         player.setHealth(50);
         player.setOverAllHealth(50);
@@ -507,8 +514,24 @@ public class GameActivity extends AppCompatActivity {
         player.setDefense(7);
         player.calcStats(player.getLevel());
         player.setItemUses(3);
+        healthView.setText(currentHealthDisplay());
         //update user with player stats
         updateUserInfo(player);
+        //reset enemy
+        //delete old enemy save if it exists
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("savedEnemy");
+        query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> save, ParseException e) {
+                if (e == null) {
+                    if(save.size() > 0) {
+                        save.get(0).deleteInBackground();
+                    }
+                } else {
+                    snackMaker(e.getMessage());
+                }
+            }
+        });
         Intent intent = LandingActivity.intent_factory(this);
         startActivity(intent);
     }
