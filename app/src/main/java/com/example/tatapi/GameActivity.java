@@ -166,7 +166,11 @@ public class GameActivity extends AppCompatActivity {
             }
             else{
 //                battleView.append(testEnemy.getName() + " took " + damage + " damage!\n"); // TODO recycle?
-                refreshDisplay(testEnemy.getName() + " took " + damage + " damage!");
+                if(damage <= 0){
+                    refreshDisplay(player.getUsername() + " missed!");
+                }else{
+                    refreshDisplay(testEnemy.getName() + " took " + damage + " damage!");
+                }
             }
             //lineCount++;
             //if enemy is defeated...
