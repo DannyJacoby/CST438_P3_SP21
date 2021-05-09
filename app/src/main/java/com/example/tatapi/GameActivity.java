@@ -245,7 +245,7 @@ public class GameActivity extends AppCompatActivity {
                 //replace with defense calculation
                 Random rand = new Random();
                 //nope, you might get negative values!
-                int damage = rand.nextInt(testEnemy.getStrength() * 10);
+                int damage = rand.nextInt(testEnemy.getStrength());
                 if(damage - rand.nextInt(player.getDefense()) <= 0){
                     damage = 0;
                 }
@@ -343,7 +343,7 @@ public class GameActivity extends AppCompatActivity {
                     } else {
                         // Player should only have no enemy if they've never played before.
                         getNewEnemy();
-                        player.setLevel(1);
+                        //player.setLevel(1);
                         player.calcStats(player.getLevel());
                         currentLevel = player.getLevel();
                     }
@@ -366,7 +366,7 @@ public class GameActivity extends AppCompatActivity {
                     Enemy tempEnemy = enemies.get(random);
                     //snackMaker(tempEnemy.getName());
                     testEnemy = tempEnemy;
-                    snackMaker(testEnemy.getName());
+                    snackMaker(testEnemy.getName() + " has Appeared!");
 
                     // TODO abstract to function
                     String enemyName = testEnemy.getName().toLowerCase();
@@ -386,7 +386,7 @@ public class GameActivity extends AppCompatActivity {
                      */
                     //NOTE: ONLY call calcStats upon level up, do not call it upon restoring state
                     //it will overwrite stats
-                    tempEnemy.calcStats(currentLevel);
+                    testEnemy.calcStats(currentLevel);
                     /*
                     Log.d("DEBUG", "New Enemy OverallHealth: " + Integer.toString(testEnemy.getOverallHealth()));
                     Log.d("DEBUG", "New Enemy Health: " + Integer.toString(testEnemy.getHealth()));
@@ -576,7 +576,7 @@ public class GameActivity extends AppCompatActivity {
         saveEnemy.put("name", testEnemy.getName());
         saveEnemy.put("health", testEnemy.getHealth());
         saveEnemy.put("overallHealth", testEnemy.getOverallHealth());
-        saveEnemy.put("strength", testEnemy.getDefense());
+        saveEnemy.put("strength", testEnemy.getStrength());
         saveEnemy.put("defense", testEnemy.getDefense());
         saveEnemy.put("description", testEnemy.getDescription());
         saveEnemy.put("user", ParseUser.getCurrentUser().getObjectId());

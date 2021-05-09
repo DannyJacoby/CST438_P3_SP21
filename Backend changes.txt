@@ -1,3 +1,4 @@
 Added a GameState class to the Back4app database, subject to change.
 Added the itemUses column to the User class on Back4app, used for item implementation.
 Added some new enemies.
+Cloud Code for modification/deletion of users.

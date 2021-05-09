@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ModUserLayout">
+    tools:context=".ModifyUserActivity">
+
+    <TextView
+        android:id="@+id/modUserTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/ModifyUser"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/UserNameField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/nameString"
+        android:autofillHints="@string/nameString"
+        android:inputType="textPersonName"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modUserTitleText"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <TextView
+        android:id="@+id/UserNameTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TagUserName"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserNameField"
+        app:layout_constraintEnd_toStartOf="@+id/UserNameField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/UserNameField" />
+
+    <Button
+        android:id="@+id/loadUserBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/LoadUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UserNameField" />
+
+    <TextView
+        android:id="@+id/UserHealthTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:text="@string/TagUserHealth"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserHealthField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/UserHealthField"
+        app:layout_constraintVertical_bias="0.523" />
+
+    <EditText
+        android:id="@+id/UserHealthField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/TagUserHealth"
+        android:autofillHints="@string/TagUserHealth"
+        android:inputType="number"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/UserHealthTag"
+        app:layout_constraintTop_toBottomOf="@+id/loadUserBtn" />
+
+    <TextView
+        android:id="@+id/UserStrengthTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TagUserStrength"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserStrengthField"
+        app:layout_constraintEnd_toStartOf="@+id/UserStrengthField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/UserStrengthField"
+        app:layout_constraintVertical_bias="0.523" />
+
+    <EditText
+        android:id="@+id/UserStrengthField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="@string/TagUserStrength"
+        android:autofillHints="@string/TagUserStrength"
+        android:inputType="number"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UserHealthField" />
+
+    <TextView
+        android:id="@+id/UserDefenseTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TagUserDefense"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserDefenseField"
+        app:layout_constraintEnd_toStartOf="@+id/UserDefenseField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/UserDefenseField"
+        app:layout_constraintVertical_bias="0.523" />
+
+    <EditText
+        android:id="@+id/UserDefenseField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="@string/TagUserDefense"
+        android:autofillHints="@string/TagUserDefense"
+        android:inputType="number"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UserStrengthField" />
+
+    <TextView
+        android:id="@+id/UserLevelTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TagUserLevel"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserLevelField"
+        app:layout_constraintEnd_toStartOf="@+id/UserLevelField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/UserLevelField"
+        app:layout_constraintVertical_bias="0.523" />
+
+    <EditText
+        android:id="@+id/UserLevelField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="@string/TagUserLevel"
+        android:autofillHints="@string/TagUserLevel"
+        android:inputType="number"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UserDefenseField" />
+
+    <TextView
+        android:id="@+id/UserHsTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TagUserHS"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserHsField"
+        app:layout_constraintEnd_toStartOf="@+id/UserHsField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/UserHsField"
+        app:layout_constraintVertical_bias="0.523" />
+
+    <EditText
+        android:id="@+id/UserHsField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="@string/TagUserHS"
+        android:autofillHints="@string/TagUserHS"
+        android:inputType="number"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UserLevelField" />
+
+    <TextView
+        android:id="@+id/UserAdminTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/TagUserAdmin"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserAdminToggle"
+        app:layout_constraintEnd_toEndOf="@+id/UserHsTag"
+        app:layout_constraintStart_toStartOf="@+id/UserHsTag"
+        app:layout_constraintTop_toBottomOf="@+id/UserHsTag"
+        app:layout_constraintVertical_bias="0.523" />
+
+    <Switch
+        android:id="@+id/UserAdminToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintEnd_toEndOf="@+id/UserHsField"
+        app:layout_constraintStart_toStartOf="@+id/UserHsField"
+        app:layout_constraintTop_toBottomOf="@+id/UserHsField"
+        android:textOff="no"
+        android:showText="true"
+        android:textOn="yes" />/>
+
+    <Button
+        android:id="@+id/SaveUserBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/SaveUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/UserAdminToggle" />
+
+    <Button
+        android:id="@+id/DeleteUserBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/DeleteUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SaveUserBtn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
