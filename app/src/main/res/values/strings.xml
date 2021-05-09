@@ -35,6 +35,17 @@
     <string name="TagEnemyDescription">Enemy Description</string>
     <string name="LoadStats">Load Stats</string>
     <string name="UpdateStats">Update Stats</string>
+    <string name="ModifyUser">Modify a User</string>
+    <string name="TagUserName">User Name</string>
+    <string name="TagUserHealth">User Health</string>
+    <string name="TagUserStrength">User Strength</string>
+    <string name="TagUserDefense">User Defense</string>
+    <string name="TagUserLevel">User Level</string>
+    <string name="TagUserHS">User Highscore</string>
+    <string name="TagUserAdmin">User Admin</string>
+    <string name="LoadUser">Load User</string>
+    <string name="SaveUser">Save User</string>
+    <string name="DeleteUser">Delete User</string>
     <!--  Back4app connection credentials  -->
     <string name="back4app_server_url">https://parseapi.back4app.com/</string>
     <string name="back4app_app_id">pvk0ILQ0nY0kop4xpDJweRiKpDqT9vsNx2OTiUNz</string>

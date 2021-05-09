@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,10 +21,15 @@ import java.util.List;
 public class ModEnemyStatsActivity extends AppCompatActivity {
 
     private EditText enemyNameField;
+    private TextView enemyNameTag;
     private EditText enemyHealthField;
+    private TextView enemyHealthTag;
     private EditText enemyStrField;
+    private TextView enemyStrTag;
     private EditText enemyDefField;
+    private TextView enemyDefTag;
     private EditText enemyDesField;
+    private TextView enemyDesTag;
     private Button loadStatsButton;
     private Button updateStatsButton;
     boolean statsLoaded;
@@ -36,19 +42,22 @@ public class ModEnemyStatsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mod_enemy_stats);
         wireUp();
-
-
     }
 
     private void wireUp(){
         enemyNameField = findViewById(R.id.enemyNameField);
+        enemyNameTag = findViewById(R.id.enemyNameTag);
         enemyHealthField = findViewById(R.id.enemyHealthField);
+        enemyHealthTag = findViewById(R.id.enemyHealthTag);
         enemyStrField = findViewById(R.id.enemyStrengthField);
+        enemyStrTag = findViewById(R.id.enemyStrengthTag);
         enemyDefField = findViewById(R.id.enemyDefenseField);
+        enemyDefTag = findViewById(R.id.enemyDefenseTag);
         enemyDesField = findViewById(R.id.enemyDescriptionField);
+        enemyDesTag = findViewById(R.id.enemyDescriptionTag);
         loadStatsButton = findViewById(R.id.loadStatsBtn);
         updateStatsButton = findViewById(R.id.updateStatsBtn);
-        updateStatsButton.setVisibility(View.GONE);
+        toggleFieldsAndButtons(false);
         statsLoaded = false;
 
         loadStatsButton.setOnClickListener(v -> {
@@ -65,8 +74,7 @@ public class ModEnemyStatsActivity extends AppCompatActivity {
                         enemyDefField.setText(String.valueOf(tempEnemy.getDefense()));
                         enemyDesField.setText(tempEnemy.getDescription());
                         statsLoaded = true;
-                        loadStatsButton.setVisibility(View.GONE);
-                        updateStatsButton.setVisibility(View.VISIBLE);
+                        toggleFieldsAndButtons(true);
                     } else {
                         if (enemies.size() == 0) {
                             snackMaker("No such enemy found.");
@@ -95,8 +103,7 @@ public class ModEnemyStatsActivity extends AppCompatActivity {
                 enemyDefField.setText("");
                 enemyDesField.setText("");
                 snackMaker("Enemy stats were updated!");
-                updateStatsButton.setVisibility(View.GONE);
-                loadStatsButton.setVisibility(View.VISIBLE);
+                toggleFieldsAndButtons(false);
             }
         });
 
@@ -112,5 +119,43 @@ public class ModEnemyStatsActivity extends AppCompatActivity {
                 message,
                 Snackbar.LENGTH_SHORT);
         snackBar.show();
+    }
+
+    private void toggleEditText(EditText editText, boolean active) {
+        if(active){
+            editText.setEnabled(true);
+        } else {
+            editText.setEnabled(false);
+        }
+    }
+
+    private void toggleFieldsAndButtons(boolean show) {
+        if (show) {
+            toggleEditText(enemyNameField, false);
+            enemyNameTag.setVisibility(View.GONE);
+            enemyHealthField.setVisibility(View.VISIBLE);
+            enemyHealthTag.setVisibility(View.VISIBLE);
+            enemyStrField.setVisibility(View.VISIBLE);
+            enemyStrTag.setVisibility(View.VISIBLE);
+            enemyDefField.setVisibility(View.VISIBLE);
+            enemyDefTag.setVisibility(View.VISIBLE);
+            enemyDesField.setVisibility(View.VISIBLE);
+            enemyDesTag.setVisibility(View.VISIBLE);
+            loadStatsButton.setVisibility(View.GONE);
+            updateStatsButton.setVisibility(View.VISIBLE);
+        } else {
+            toggleEditText(enemyNameField, true);
+            enemyNameTag.setVisibility(View.VISIBLE);
+            enemyHealthField.setVisibility(View.GONE);
+            enemyHealthTag.setVisibility(View.GONE);
+            enemyStrField.setVisibility(View.GONE);
+            enemyStrTag.setVisibility(View.GONE);
+            enemyDefField.setVisibility(View.GONE);
+            enemyDefTag.setVisibility(View.GONE);
+            enemyDesField.setVisibility(View.GONE);
+            enemyDesTag.setVisibility(View.GONE);
+            loadStatsButton.setVisibility(View.VISIBLE);
+            updateStatsButton.setVisibility(View.GONE);
+        }
     }
 }
