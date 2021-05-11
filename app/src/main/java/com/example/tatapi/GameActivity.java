@@ -330,7 +330,12 @@ public class GameActivity extends AppCompatActivity {
                         testEnemy.setStrength(savedEnemy.get(0).getInt("strength"));
                         testEnemy.setDefense(savedEnemy.get(0).getInt("defense"));
                         testEnemy.setDescription(savedEnemy.get(0).getString("description"));
-
+                        turnCount = savedEnemy.get(0).getInt("turnCount");
+                        enemiesDefeated = savedEnemy.get(0).getInt("enemiesDefeated");
+                        currentLevel = savedEnemy.get(0).getInt("currentLevel");
+                        dead = savedEnemy.get(0).getBoolean("dead");
+                        levelUp = savedEnemy.get(0).getBoolean("levelUp");
+                        prevEnemy = savedEnemy.get(0).getString("prevEnemy");
                         healthView.setText(savedEnemy.get(0).getString("healthViewTxt"));
                         battleView.setText(savedEnemy.get(0).getString("battleViewTxt"));
                         mBattleLog.add(savedEnemy.get(0).getString("battleViewTxt"));
@@ -586,6 +591,12 @@ public class GameActivity extends AppCompatActivity {
         saveEnemy.put("user", ParseUser.getCurrentUser().getObjectId());
         saveEnemy.put("healthViewTxt", healthView.getText().toString());
         saveEnemy.put("battleViewTxt", battleView.getText().toString());
+        saveEnemy.put("turnCount", turnCount);
+        saveEnemy.put("enemiesDefeated", enemiesDefeated);
+        saveEnemy.put("currentLevel", currentLevel);
+        saveEnemy.put("dead", dead);
+        saveEnemy.put("levelUp", levelUp);
+        saveEnemy.put("prevEnemy", prevEnemy);
         saveEnemy.saveInBackground();
         //update user with player stats
         updateUserInfo(player);
