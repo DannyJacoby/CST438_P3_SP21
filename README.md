@@ -1,8 +1,8 @@
 # CST438_P3_SP21
 <h2>Project 3: TATAPI</h2>
 <b>Project Description:</b><i>A mobile turn-based game played through an API.</i>
-<br>
-<b>Project Members:</b>
+<br><br>
+<b>Project Members (Team F):</b>
 <ul>
   <li>Danny Jacoby</li>
   <li>Brian Carbonneau</li>
@@ -10,14 +10,19 @@
   <li>Christian Sumares</li>
 </ul>
 <br>
-<b>MVP:</b> <i>a thing that works...</i>
-<br>
+<b>MVP:</b> A game that stores information in a database and retrieves it upon various actions. Account creation, leaderboard, regular and admin level users. 
+<br><br>
 <b>Timeline:</b>
 <ul>
   <li>Week 1: Refine project details, deliverables, write user stories, select technologies, etc.</li>
+  <li>Week 2: we did things </li>
+  <li>Week 3: we did even more things </li>
+  <li>Week 4: Final implmenetation of state saving, gameplay loop tweaked as necessary, final bug fixes, misc. cleanup, playtesting, final polish. </li>
 </ul>
 <b>Main Project Idea:</b>
-  <li>Using API calls to a website (Flask?), we build a game (Android) that acts like a dungeon crawler whereas you explore a dungeon by fighting monsters in a wave battle style</li>
+  <li>Utilizing a database created with back4app, and accessing it via parse, we developed a turn-based RPG that pulls relevant information down from the database.</li>
+  <li>Player can backout of app and save their gameplay state, and resume upon logging in.</li>
+  <li>A leaderboard stored on the database also keeps track of how far each player got when they lost.</li>
 <br>
 <b>Mockup:</b>
 <br>
@@ -29,3 +34,4 @@
   <li><a href="https://docs.parseplatform.org/android/guide/">Parse</a></li>
   <li><a href="https://dashboard.back4app.com/">Back4App</a></li>
 </ul>
+  <b>For educational purposes only.</b>
