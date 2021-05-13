@@ -62,6 +62,14 @@ public class ModEnemyStatsActivity extends AppCompatActivity {
 
         loadStatsButton.setOnClickListener(v -> {
             String name = enemyNameField.getText().toString();
+            if(name.isEmpty()) {
+                snackMaker("No name entered!");
+                return;
+            } else {
+                // Capitalizing the first letter only
+                String temp = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
+                name = temp;
+            }
             ParseQuery<Enemy> query = ParseQuery.getQuery("Enemy");
             query.whereEqualTo("name", name);
             query.findInBackground(new FindCallback<Enemy>() {

@@ -60,4 +60,6 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="noToggleText"><font size="8">No</font></string>
+    <string name="yesToggleText"><font size="8">Yes</font></string>
 </resources>
