@@ -24,9 +24,12 @@
   <li>Player can backout of app and save their gameplay state, and resume upon logging in.</li>
   <li>A leaderboard stored on the database also keeps track of how far each player got when they lost.</li>
 <br>
-<b>Mockup:</b>
+<b>Original Mockup:</b>
+<img src="https://i.imgur.com/ICnOnQP.png"> 
+
 <br>
-<b>ERD:</b>
+<b>Original ERD:</b>
+<img src="https://i.imgur.com/skBT8tK.png">
 <br>
 <b>Technologies Incorporated:</b>
 <ul>
